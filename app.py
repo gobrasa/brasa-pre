@@ -1,17 +1,28 @@
 from flask import Flask
-from datetime import datetime
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
+app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+from models import Result
+
 
 @app.route('/')
-def homepage():
-    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
+def hello():
+    return "Hello World!"
 
-    return """
-    <h1>Hello heroku</h1>
-    <p>It is currently {time}.</p>
 
-    <img src="http://loremflickr.com/600/400">
-    """.format(time=the_time)
+@app.route('/<name>')
+def hello_name(name):
+    return "Hello {}!".format(name)
+
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    app.run()
