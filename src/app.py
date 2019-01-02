@@ -1,44 +1,38 @@
 from flask import Flask, jsonify
+from logging import DEBUG, INFO
 
 import os
 from dotenv import load_dotenv
 from flask_restless import APIManager
 
-from src.database import db
-from flask_restful import Api
-from src.ResultResource import ResultListResource, ResultResource
-from src.models import Result
+from database import db
+from models import Result, ExampleModel
 
 
 def create_app():
-
     load_dotenv()
     app = Flask(__name__)
+    app.logger.log(INFO, 'APP Settings : {}'.format(os.environ['APP_SETTINGS']))
     app.config.from_object(os.environ['APP_SETTINGS'])
-    app.config['DEBUG'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    # ToDo - move SQLALCHEMY_TRACK_MODIFICATIONS to .env file
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with app.app_context():
         db.init_app(app)
-        blueprint = register_models_endpoints(app)
-        app.register_blueprint(blueprint)
-
-    #db.init_app(app)
-
+        register_models(app)
 
     return app
 
-def register_models_endpoints(app):
-    manager = APIManager(app, flask_sqlalchemy_db=db)
-    #manager.create_api(Result, methods=['GET', 'POST', 'DELETE'])
-    blueprint = manager.create_api_blueprint(Result, methods=['GET', 'POST', 'DELETE'])
-    return blueprint
 
+def register_models(app):
+    manager = APIManager(app, flask_sqlalchemy_db=db)
+    app.register_blueprint(manager.create_api_blueprint(Result, methods=['GET', 'POST', 'DELETE']))
+    app.register_blueprint(manager.create_api_blueprint(ExampleModel, methods=['GET', 'POST', 'DELETE']))
 
 
 def setup_database(app):
     pass
+
 
 app = create_app()
 

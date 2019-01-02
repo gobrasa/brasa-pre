@@ -3,7 +3,7 @@ import os
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from src.app import app, db
+from app import app, db
 from dotenv import load_dotenv
 load_dotenv()
 
