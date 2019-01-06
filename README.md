@@ -1,5 +1,7 @@
 # Brasa Pre
 
+[![CircleCI](https://circleci.com/gh/gabrielfior/brasa-pre/tree/master.svg?style=svg)](https://circleci.com/gh/gabrielfior/brasa-pre/tree/master)
+
 ### Starting app locally
 
 Set environment variable APP_SETTINGS in a .env file in the src directory:
