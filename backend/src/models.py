@@ -15,7 +15,7 @@ class Mentee(db.Model):
 
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
     username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
-    
+
 
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
     # ToDo - add relationship (1 mentor has 1 cycle)
