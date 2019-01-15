@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from flask_restless import APIManager
 
 from database import db
-from models import Result, ExampleModel
+from models import Mentee, Mentor, Users, Cycles, Meetings
 
 
 def create_app():
@@ -21,14 +21,22 @@ def create_app():
         db.init_app(app)
         register_models(app)
 
+        db.create_all()
+
+    @app.route('/')
+    def index():
+        return 'Hello from index!'
+
     return app
 
 
 def register_models(app):
     manager = APIManager(app, flask_sqlalchemy_db=db)
-    app.register_blueprint(manager.create_api_blueprint(Result, methods=['GET', 'POST', 'DELETE']))
-    app.register_blueprint(manager.create_api_blueprint(ExampleModel, methods=['GET', 'POST', 'DELETE']))
-
+    manager.create_api(Mentee, methods=['GET', 'POST', 'DELETE'])
+    manager.create_api(Mentor, methods=['GET', 'POST', 'DELETE'])
+    manager.create_api(Users, methods=['GET', 'POST', 'DELETE'])
+    manager.create_api(Cycles, methods=['GET', 'POST', 'DELETE'])
+    manager.create_api(Meetings, methods=['GET', 'POST', 'DELETE'])
 
 def setup_database(app):
     pass
