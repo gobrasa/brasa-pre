@@ -1,4 +1,4 @@
 web: gunicorn --pythonpath backend/src app:app
-init: python manage.py db init
-migrate: python manage.py db migrate
-upgrade: python manage.py db upgrade
+init: python backend/src/manage.py db init
+migrate: python backend/src/manage.py db migrate
+upgrade: python backend/src/manage.py db upgrade
