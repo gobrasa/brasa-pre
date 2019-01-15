@@ -1,2 +1,2 @@
-python backend/src/manage.py migrate
-python backend/src/manage.py upgrade
+python backend/src/manage.py db migrate
+python backend/src/manage.py db upgrade
