@@ -15,9 +15,12 @@ class Mentee(db.Model):
 
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
     username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
-
-
+    city = db.Column(db.String(50))
+    state = db.Column(db.String(50))
+    financial_aid = db.Column(db.Boolean, nullable=False)
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
+
+    # ToDo - add relationship to universities
     # ToDo - add relationship (1 mentor has 1 cycle)
 
 
@@ -76,3 +79,12 @@ class Users(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class University(db.Model):
+    __tablename__ = "universities"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), index=True, unique=True)
+    city = db.Column(db.String(120))
+    state = db.Column(db.String(120))
+    country = db.Column(db.String(120))
