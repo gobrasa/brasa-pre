@@ -32,6 +32,8 @@ def create_app():
 
 def register_models(app):
     manager = APIManager(app, flask_sqlalchemy_db=db)
+
+    # ToDo - check options - patch many, insert bulk, pagination
     manager.create_api(Mentee, methods=['GET', 'POST', 'DELETE'])
     manager.create_api(Mentor, methods=['GET', 'POST', 'DELETE'])
     manager.create_api(Users, methods=['GET', 'POST', 'DELETE'])

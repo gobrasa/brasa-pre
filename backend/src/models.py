@@ -9,10 +9,16 @@ class Mentee(db.Model):
     __tablename__ = 'mentees'
 
     id = db.Column(db.Integer, primary_key=True)
+
     # ToDo - add column definitions
 
-    # ToDo - add relationship (1 mentor has many mentees)
-    # ToDo - add relationship (1 mentor is active for one cycle)
+
+    mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
+    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
+    
+
+    cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
+    # ToDo - add relationship (1 mentor has 1 cycle)
 
 
 class Mentor(db.Model):
@@ -21,16 +27,25 @@ class Mentor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # ToDo - add column definitions
 
-    # ToDo - add relationship (1 mentor has many mentees)
+    mentees = db.relationship(Mentee.__name__)
+
+    # ToDo - 1 mentor has 1 cycle
+    cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
 
 class Meetings(db.Model):
     __tablename__ = 'meetings'
 
     id = db.Column(db.Integer, primary_key=True)
-    datetime = db.Column(db.DateTime)
+    datetime = db.Column(db.DateTime, nullable=False)
     # ToDo - add column definitions
 
     # ToDo - add relationship (A meeting takes place sometime between 1 mentor and 1 mentee)
+    mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'), nullable=False)
+    mentor = db.relationship(Mentor.__name__, backref="meetings")
+
+    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+    mentee = db.relationship(Mentee.__name__, backref="meetings")
+
 
 class Cycles(db.Model):
     __tablename__ = "cycles"
@@ -39,6 +54,11 @@ class Cycles(db.Model):
     summary = db.Column(db.String(50))
     cycle_start = db.Column(db.DateTime)
     cycle_end = db.Column(db.DateTime)
+
+    #ToDo - 1 cycle has many mentees and many mentors
+    mentees = db.relationship(Mentee.__name__)
+    mentors = db.relationship(Mentor.__name__)
+
 
 class Users(UserMixin, db.Model):
     __tablename__ = "pre_users"
