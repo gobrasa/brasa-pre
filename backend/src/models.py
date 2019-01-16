@@ -14,7 +14,6 @@ class Mentee(db.Model):
 
     # ToDo - add column definitions
 
-
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
     username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
     city = db.Column(db.String(50))
@@ -60,7 +59,6 @@ class Cycles(db.Model):
     cycle_start = db.Column(db.DateTime)
     cycle_end = db.Column(db.DateTime)
 
-    #ToDo - 1 cycle has many mentees and many mentors
     mentees = db.relationship(Mentee.__name__)
     mentors = db.relationship(Mentor.__name__)
 
@@ -85,9 +83,6 @@ class User(UserMixin, db.Model):
         'messages_received': self.messages_received,
         'last_message_read_time': self.last_message_read_time
         }
-
-    def __init__(self, id):
-        self.id = id
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -135,3 +130,14 @@ class Exams(db.Model):
     category = db.Column(db.String(120))
     subcategory = db.Column(db.String(120))
     score = db.Column(db.String(20)) # Not sure whether score is A or 100
+
+class UniversityApplication(db.Model):
+    __tablename__ = "university_applications"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+    mentee = db.relationship(Mentee.__name__, backref="university_applications")
+
+    university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
+    university = db.relationship(University.__name__, backref="university_applications")
