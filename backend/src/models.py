@@ -117,6 +117,8 @@ class Message(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
 
+
+
     #ToDo - add sender and recipient objects as relationships
 
     body = db.Column(db.String(140))
@@ -124,3 +126,12 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Message {}>'.format(self.body)
+
+class Exams(db.Model):
+    __tablename__ = "exams"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
+    category = db.Column(db.String(120))
+    subcategory = db.Column(db.String(120))
+    score = db.Column(db.String(20)) # Not sure whether score is A or 100
