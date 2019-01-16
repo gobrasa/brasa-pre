@@ -1,4 +1,6 @@
-from flask import Flask, jsonify
+import datetime
+
+from flask import Flask, jsonify, request
 from logging import DEBUG, INFO
 
 import os
@@ -6,7 +8,7 @@ from dotenv import load_dotenv
 from flask_restless import APIManager
 
 from database import db
-from models import Mentee, Mentor, Users, Cycles, Meetings
+from models import Mentee, Mentor, User, Cycles, Meetings, Message
 
 
 def create_app():
@@ -27,6 +29,28 @@ def create_app():
     def index():
         return 'Hello from index!'
     #
+
+    @app.route('/send_message/<sender>/<recipient>', methods=['GET', 'POST'])
+    def send_message(sender, recipient):
+        recipient = User.query.filter_by(username=recipient).first_or_404()
+        sender = User.query.filter_by(username=sender).first_or_404()
+        body = request.form
+        msg = Message(author=sender, recipient=recipient,
+                      body=body)
+        db.session.add(msg)
+        db.session.commit()
+        print('Your message has been sent.')
+        return msg.id
+
+    @app.route('/<username>/messages')
+    def messages(username):
+        user = User.query.filter_by(username=username).first_or_404()
+        user.last_message_read_time = datetime.datetime.utcnow()
+        db.session.commit()
+        messages = user.messages_received.order_by(
+            Message.timestamp.desc())
+        return messages
+
     return app
 
 
@@ -36,9 +60,11 @@ def register_models(app):
     # ToDo - check options - patch many, insert bulk, pagination
     manager.create_api(Mentee, methods=['GET', 'POST', 'DELETE'])
     manager.create_api(Mentor, methods=['GET', 'POST', 'DELETE'])
-    manager.create_api(Users, methods=['GET', 'POST', 'DELETE'])
+    manager.create_api(User, methods=['GET', 'POST', 'DELETE'])
     manager.create_api(Cycles, methods=['GET', 'POST', 'DELETE'])
     manager.create_api(Meetings, methods=['GET', 'POST', 'DELETE'])
+
+
 
 def setup_database(app):
     pass
