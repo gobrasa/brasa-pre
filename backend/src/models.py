@@ -1,3 +1,5 @@
+import datetime
+
 from flask_login import UserMixin
 from sqlalchemy.dialects.postgresql import JSON
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -63,13 +65,26 @@ class Cycles(db.Model):
     mentors = db.relationship(Mentor.__name__)
 
 
-class Users(UserMixin, db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "pre_users"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'username':self.username,
+            'email':self.email,
+            'password_hash':self.password_hash,
+            'messages_sent': self.messages_sent,
+        'messages_received': self.messages_received,
+        'last_message_read_time': self.last_message_read_time
+        }
 
     def __init__(self, id):
         self.id = id
@@ -80,6 +95,11 @@ class Users(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def new_messages(self):
+        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+        return Message.query.filter_by(recipient=self).filter(
+            Message.timestamp > last_read_time).count()
+
 class University(db.Model):
     __tablename__ = "universities"
 
@@ -88,3 +108,19 @@ class University(db.Model):
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     country = db.Column(db.String(120))
+
+class Message(db.Model):
+
+    __tablename__ = "messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
+
+    #ToDo - add sender and recipient objects as relationships
+
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.datetime.utcnow)
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)
