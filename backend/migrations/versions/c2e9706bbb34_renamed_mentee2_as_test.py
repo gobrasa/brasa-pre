@@ -21,10 +21,6 @@ def upgrade():
     op.drop_index('ix_mentees2_username', table_name='mentees2')
     op.drop_table('mentees2')
 
-    op.drop_constraint(u'meetings_mentee_id_fkey', 'meetings', type_='foreignkey')
-    op.drop_constraint(u'university_applications_mentee_id_fkey', 'university_applications', type_='foreignkey')
-    op.drop_table('mentees')
-
     # ### end Alembic commands ###
 
 

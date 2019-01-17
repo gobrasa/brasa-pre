@@ -1,28 +1,9 @@
 import datetime
 
 from flask_login import UserMixin
-from sqlalchemy.dialects.postgresql import JSON
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database import db
-
-class Mentee2(db.Model):
-    __tablename__ = 'mentees2'
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    # ToDo - add column definitions
-
-    mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
-    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
-    city = db.Column(db.String(50))
-    state = db.Column(db.String(50))
-    financial_aid = db.Column(db.Boolean, nullable=False)
-    cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
-
-    # ToDo - add relationship to universities
-    # ToDo - add relationship (1 mentor has 1 cycle)
-
 
 class Mentee(db.Model):
     __tablename__ = 'mentees'
@@ -40,7 +21,6 @@ class Mentee(db.Model):
 
     # ToDo - add relationship to universities
     # ToDo - add relationship (1 mentor has 1 cycle)
-
 
 class Mentor(db.Model):
     __tablename__ = 'mentors'
@@ -75,6 +55,7 @@ class Cycles(db.Model):
     summary = db.Column(db.String(50))
     cycle_start = db.Column(db.DateTime)
     cycle_end = db.Column(db.DateTime)
+    region = db.Column(db.String(60)) #europe, americas
 
     mentees = db.relationship(Mentee.__name__)
     mentors = db.relationship(Mentor.__name__)
@@ -128,8 +109,6 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
-
-
 
     #ToDo - add sender and recipient objects as relationships
 
