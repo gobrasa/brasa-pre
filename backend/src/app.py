@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from flask_restless import APIManager
 
 from database import db
-from models import Mentee, Mentor, User, Cycles, Meetings, Message, University, Exams, UniversityApplication, Mentee2
+from models import Mentee, Mentor, User, Cycles, Meetings, Message, University, Exams, UniversityApplication
 
 
 def create_app():
@@ -59,9 +59,6 @@ def register_models(app):
 
     # ToDo - check options - patch many, insert bulk, pagination
     manager.create_api(Mentee, methods=['GET', 'POST', 'DELETE'])
-
-    manager.create_api(Mentee2, methods=['GET', 'POST', 'DELETE'])
-
     manager.create_api(Mentor, methods=['GET', 'POST', 'DELETE'])
     manager.create_api(User, methods=['GET', 'POST', 'DELETE'], exclude_columns=['password_hash'])
     manager.create_api(Cycles, methods=['GET', 'POST', 'DELETE'])
