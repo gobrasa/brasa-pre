@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{menteeDeckGroup}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <app-search (searchCompleted)="hydratementees($event)" [items]="copyOfmentees" [filteredProperty]="'name'"></app-search>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="mentees.length > 0">
+    <ion-mentee *ngFor="let mentee of mentees">
+      <ion-mentee-header>
+        <ion-mentee-subtitle>
+          {{mentee.menteeSet}}
+        </ion-mentee-subtitle>
+        <ion-mentee-title>
+          {{mentee.name}}
+        </ion-mentee-title>
+      </ion-mentee-header>
+      <ion-mentee-content>
+        <div [innerHTML]="mentee.text">
+        </div>
+        <ion-button [href]="'/tabs/(mentee:mentee/' + mentee.menteeId + ')'" size='medium' expand='full'>
+          See Detail
+        </ion-button>
+      </ion-mentee-content>
+    </ion-mentee>
+  </ion-list>
+</ion-content>

@@ -20,25 +20,70 @@
         <p>Placeholder</p>
       </ion-card-content>
     </ion-card>
-    <ion-list lines="none">
-      <ion-list-header>
-        <ion-label>Resources</ion-label>
-      </ion-list-header>
-      <ion-item href="https://beta.ionicframework.com/docs/">
-        <ion-icon slot="start" color="medium" name="book"></ion-icon>
-        <ion-label>Ionic Documentation</ion-label>
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-item>
+        <ion-label>Nome Completo</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
-      <ion-item href="https://beta.ionicframework.com/docs/building/scaffolding">
-        <ion-icon slot="start" color="medium" name="build"></ion-icon>
-        <ion-label>Scaffold Out Your App</ion-label>
+      <ion-item>
+        <ion-label>Nome Completo do seu Mentor</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
-      <ion-item href="https://beta.ionicframework.com/docs/layout/structure">
-        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-        <ion-label>Change Your App Layout</ion-label>
+      <ion-item>
+        <ion-label>Cidade</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
-      <ion-item href="https://beta.ionicframework.com/docs/theming/basics">
-        <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-        <ion-label>Theme Your App</ion-label>
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
       </ion-item>
-    </ion-list>
+      <ion-item>
+        <ion-label>Precisa de Financial Aid?</ion-label>
+          <ion-select>
+            <ion-select-option value="true">Sim</ion-select-option>
+            <ion-select-option value="false">Não</ion-select-option>
+          </ion-select>
+      </ion-item>
+
+      <ion-label>Coloque todos seus scores no SAT (adicione campos conforme necessário):</ion-label>
+      <br>
+      <ion-item *ngFor="let att of satArray; let idx = index">
+           <ion-label color="primary">SAT Score</ion-label>
+           <ion-input type="text"  text-right  [(ngModel)]="satArray[idx].value"></ion-input>
+       </ion-item>
+       <ion-button  (click)="AddSAT()">Adicionar SAT Score</ion-button>
+       <br>
+       <ion-label>Reporte seus resultados em provas (SAT, TOEFL ...). Adicione campos conforme necessário:</ion-label>
+       <br>
+       <ion-item *ngFor="let att of scoresArray; let idx = index">
+            <!--ion-label color="primary">Score</ion-label-->
+            <br>
+            <ion-label>Prova</ion-label>
+            <ion-input type="text"  text-right  [(ngModel)]="scoresArray[idx].name"></ion-input>
+            <ion-label>Nota</ion-label>
+            <ion-input type="text"  text-right  [(ngModel)]="scoresArray[idx].value"></ion-input>
+        </ion-item>
+        <ion-button  (click)="AddScore()">Adicionar Prova</ion-button>
+
+        <ion-label>Coloque todos seus scores no Subjects (adicione campos conforme necessário):</ion-label>
+        <br>
+        <ion-item *ngFor="let att of satSubjectsArray; let idx = index">
+             <ion-label color="primary">Subjects Scores</ion-label>
+             <br>
+             <ion-label>Subject</ion-label>
+             <ion-input type="text"  text-right  [(ngModel)]="satSubjectsArray[idx].subject"></ion-input>
+             <br>
+             <ion-label>Score</ion-label>
+             <ion-input type="text"  text-right  [(ngModel)]="satSubjectsArray[idx].value"></ion-input>
+             <br>
+             <ion-label>Data</ion-label>
+             <ion-input type="text"  text-right  [(ngModel)]="satSubjectsArray[idx].date"></ion-input>
+         </ion-item>
+         <ion-button  (click)="AddSubjects()">Adicionar Subjects Score</ion-button>
+
+
+
+
+      <button ion-button type="submit" [disabled]="!todo.valid">Submit</button>
+    </form>
 </ion-content>

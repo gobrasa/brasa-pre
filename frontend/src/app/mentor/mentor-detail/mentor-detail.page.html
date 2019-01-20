@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{mentee?.name}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="mentee && mentee.menteeId">
+    <ion-mentee>
+      <img [src]="mentee.img" (error)="updateImage($event)">
+      <ion-mentee-content>
+        <ion-mentee-title>
+          {{mentee?.name}}
+        </ion-mentee-title>
+        <p [innerHTML]="mentee?.text"></p>
+        <p>{{mentee?.flavor}}</p>
+        <ion-mentee-title>
+          <span class='mentee-stats-title'>Stats</span>
+        </ion-mentee-title>
+        <p *ngIf="mentee.name"><b>Name: </b> {{mentee.name}}</p>
+        <p *ngIf="mentee.scores"><b>Scores: </b> {{mentee.scores}}</p>
+        <p *ngIf="mentee.essay"><b>Essay: </b> {{mentee.essay}}</p>
+      </ion-mentee-content>
+    </ion-mentee>
+  </div>
+</ion-content>
