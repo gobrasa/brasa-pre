@@ -29,4 +29,5 @@ def downgrade():
     op.drop_constraint(None, 'university_applications', type_='foreignkey')
     op.drop_constraint(None, 'meetings', type_='foreignkey')
     op.drop_column('cycles', 'region')
+    op.drop_table('')
     # ### end Alembic commands ###
