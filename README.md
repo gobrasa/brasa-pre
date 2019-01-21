@@ -35,14 +35,16 @@ pytest tests/test_database.py
 1 - Add class to models.py file (add tablename, columns, relationships)
 2 - Create migration by initialising the migrations directory once:
 
-```python
-python src/manage.py db init
+```bash
+cd backend
+python src/manage.py db revision -m "added region to cycle" --autogenerate
 ```
 
-and running the migrations every time a change needs to made in the database:
+If any db operations need to be added, add manually to the .py file created inside the migrations folder.
 
-```python
-python src/manage.py db migrate
+The database in Heroku will execute the upgrade script when deploying upon release of a new version. If running locally, run:
+
+```bash
 python src/manage.py db upgrade
 ```
 

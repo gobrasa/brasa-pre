@@ -100,7 +100,7 @@ class University(db.Model):
     name = db.Column(db.String(120), index=True, unique=True)
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
-    country = db.Column(db.String(120))
+    country_iso_code = db.Column(db.String(120))
 
 class Message(db.Model):
 
