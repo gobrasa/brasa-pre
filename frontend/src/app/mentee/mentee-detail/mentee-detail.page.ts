@@ -1,3 +1,5 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http, Headers } from '@angular/http'
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
 import { MenteeService } from '../shared/mentee.service';
@@ -11,8 +13,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Http, Headers } from '@angular/http'
 
 @Component({
   selector: 'app-mentee-detail',

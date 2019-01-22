@@ -24,6 +24,7 @@ export class MentorDetailPage {
     const mentorId = this.route.snapshot.paramMap.get('mentorId');
 
     this.loaderService.presentLoading();
+    /*
     this.mentorService.getMentorById(mentorId).subscribe(
       (mentor: Mentor[]) => {
         /*
@@ -32,10 +33,11 @@ export class MentorDetailPage {
 
           return mentor;
         })[0];
-        */
+
 
         this.loaderService.dismissLoading();
     });
+    */
   }
 
   updateImage() {
