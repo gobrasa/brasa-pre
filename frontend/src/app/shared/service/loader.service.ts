@@ -10,8 +10,8 @@ export class LoaderService {
 
   public async presentLoading(): Promise<HTMLIonLoadingElement> {
     this.loader = await this.loadingCtrl.create({
-      content: 'Loading',
-      translucent: true
+      //content: 'Loading',
+      //translucent: true
     });
 
     this.loader.present();
