@@ -7,8 +7,8 @@ import { Mentee } from './mentee.model';
 @Injectable()
 export class MenteeService {
 
-  //private readonly HS_API_URL = 'https://omgvamp-hearthstone-v1.p.mashape.com';
-  //private readonly API_KEY = 'WZmY7utpbDmshO1LYNtsweImq68Rp1h8e1Zjsnz63RbxE029tN';
+  private readonly HS_API_URL = 'https://omgvamp-hearthstone-v1.p.mashape.com';
+  private readonly API_KEY = 'WZmY7utpbDmshO1LYNtsweImq68Rp1h8e1Zjsnz63RbxE029tN';
   private headers: HttpHeaders;
 
   constructor(private http: HttpClient) {
