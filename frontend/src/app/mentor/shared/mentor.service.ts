@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { of as ObservableOf, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Mentee } from './mentee.model';
+import { Mentor } from './mentor.model';
 
 
 @Injectable()
-export class MenteeService {
+export class MentorService {
 
   //private readonly HS_API_URL = 'https://omgvamp-hearthstone-v1.p.mashape.com';
   //private readonly API_KEY = 'WZmY7utpbDmshO1LYNtsweImq68Rp1h8e1Zjsnz63RbxE029tN';
@@ -32,11 +32,13 @@ export class MenteeService {
     return this.http.get<mentee[]>(`${this.HS_API_URL}/mentees/${menteeDeckGroup}/${menteeDeck}`, {headers: this.headers});
 
   }
-  */
+
   public getMenteeById(menteeId:string): Observable<Mentee[]>{
 
-    return this.http.get<Mentor[]>(`${this.HS_API_URL}/mentees/${menteeId}`, {headers: this.headers});
+    //return this.http.get<Mentor[]>(`${this.HS_API_URL}/mentees/${menteeId}`, {headers: this.headers});
 
   }
+
+  */
 
 }
