@@ -51,7 +51,7 @@ export class MenteeDetailPage {
       //description: [''],
     });
   }
-  logForm(){
+  public logForm(){
     console.log(this.todo.value)
     console.log(this.http.post(`${this.API_URL}/pre_users`, this.todo.value, {headers: this.headers}))
     this.http.post(`${this.API_URL}/pre_users`, this.todo.value, {headers: this.headers}).subscribe(data => {
