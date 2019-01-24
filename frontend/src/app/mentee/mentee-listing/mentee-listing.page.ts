@@ -19,13 +19,14 @@ export class MenteeListingPage {
   copyOfMentees: Mentee[] = [];
 
   constructor(private route: ActivatedRoute,
-  private menteeService: MenteeService,
-  private loaderService: LoaderService,
-  private toaster: ToastService) { }
+  //private menteeService: MenteeService,
+  //private loaderService: LoaderService,
+  //private toaster: ToastService
+) { }
 
 
   private getMentees(){
-  this.loaderService.presentLoading();
+  //this.loaderService.presentLoading();
   /*
   this.menteeService.getMenteesByDeck(this.menteeDeckGroup, this.menteeDeck).subscribe(
     (mentees: Mentee[]) => {

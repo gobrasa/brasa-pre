@@ -1,4 +1,4 @@
-<ion-header>
+<!--ion-header>
   <ion-toolbar>
     <ion-title>{{menteeDeckGroup}}</ion-title>
     <ion-buttons slot="start">
@@ -30,5 +30,28 @@
         </ion-button>
       </ion-mentee-content>
     </ion-mentee>
+  </ion-list>
+</ion-content-->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mentee
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-card>
+
+      <ion-card-content>
+        <ion-button [href]="'/tabs/mentee'" size='medium' expand='full'>
+          See Detail
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </ion-list>
 </ion-content>

@@ -9,6 +9,7 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 import { TabsPage } from './tabs.page';
 
 import { MenteePageModule } from '../mentee/mentee.module';
+import { MentorPageModule } from '../mentor/mentor.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { MenteePageModule } from '../mentee/mentee.module';
     CommonModule,
     FormsModule,
     TabsPageRoutingModule,
-    MenteePageModule
+    MenteePageModule,
+    MentorPageModule
   ],
   declarations: [TabsPage]
 })

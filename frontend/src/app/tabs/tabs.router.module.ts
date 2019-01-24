@@ -4,6 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { MenteeDetailPage } from '../mentee/mentee-detail/mentee-detail.page';
 import { MenteePage } from '../mentee/mentee/mentee.page';
+import { MenteeListingPage } from '../mentee/mentee-listing/mentee-listing.page';
+import { MentorDetailPage } from '../mentor/mentor-detail/mentor-detail.page';
+import { MentorPage } from '../mentor/mentor/mentor.page';
+import { MentorListingPage } from '../mentor/mentor-listing/mentor-listing.page';
+import { MenteeTestPage } from '../mentee/mentee-test/mentee-test.page'
+import { MenteeEssayPage } from '../mentee/mentee-essay/mentee-essay.page'
 //import { ContactPage } from '../contact/contact.page';
 //import { CardDeckPage } from '../card/card-deck/card-deck.page';
 
@@ -18,7 +24,15 @@ const routes: Routes = [
       },
       {
         path: 'mentor',
-        component: MenteeDetailPage
+        component: MentorPage
+      },
+      {
+        path: 'mentor/detail',
+        component: MentorDetailPage
+      },
+      {
+        path: 'mentor/listing',
+        component: MentorListingPage
       },
       {
         path: 'informacoes',
@@ -26,6 +40,15 @@ const routes: Routes = [
       },{
         path: 'mentee/detail',
         component: MenteeDetailPage
+      },{
+        path: 'mentee/listing',
+        component: MenteeListingPage
+      },{
+        path: 'mentee/test',
+        component: MenteeTestPage
+      },{
+        path: 'mentee/essay',
+        component: MenteeEssayPage
       }
       /*
       {
