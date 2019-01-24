@@ -25,40 +25,87 @@ export class MenteeDetailPage {
   public satArray:any=[];
   public scoresArray:any=[];
   public satSubjectsArray:any=[];
+  private headers: HttpHeaders;
+  public menteeProfile:any=[];
  AddSAT(){
    this.satArray.push({'value':''});
  };
  AddScore(){
-   this.scoresArray.push({'name':'','value':''});
+   this.scoresArray.push({'category':'','subcategory':'', 'score': ''});
+ };
+ RemoveScore(){
+   this.scoresArray.pop();
  };
  AddSubjects(){
    this.satSubjectsArray.push({'subject':'','value':'','date':''});
  }
- private headers: HttpHeaders;
-  constructor( private formBuilder: FormBuilder, private http: HttpClient  ) {
+
+  constructor( private formBuilder: FormBuilder, private http: HttpClient, private getMentee: HttpClient  ) {
     this.headers = new HttpHeaders({'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
     });
+
     this.todo = this.formBuilder.group({
       //title: ['', Validators.required],
       "username": '',
       //mentor: '',
-      //city: '',
-      //state: '',
-      //financial_aid: ''
+      "city": '',
+      "email": '',
+      "state": '',
+      "financial_aid": '',
+      "category":'',
+      "subcategory":'',
+
       //description: [''],
     });
+
+
+    /*this.getMentee.get(`${this.API_URL}/mentees`).subscribe(data => {
+      this.todo.value.username = data["objects"][0].username
+      console.log(this.todo.value.username)
+        //"username": data["objects"][0].username,
+
+      //this.menteeProfile.push(data['heroesUrl']),
+      //this.menteeProfile.push(data['textfile'])
+        console.log(data['_body']);
+       }, error => {
+        console.log(error);
+      });*/
   }
   public logForm(){
     console.log(this.todo.value)
     console.log(this.http.post(`${this.API_URL}/pre_users`, this.todo.value, {headers: this.headers}))
-    this.http.post(`${this.API_URL}/pre_users`, this.todo.value, {headers: this.headers}).subscribe(data => {
+    this.http.post(`${this.API_URL}/pre_users`, {
+      "username":this.todo.value.username,
+      "email": this.todo.value.email
+    }, {headers: this.headers}).subscribe(data => {
         console.log(data['_body']);
+        this.http.post(`${this.API_URL}/mentees`, {
+          "username":this.todo.value.username,
+          "city": this.todo.value.city,
+          "state": this.todo.value.state,
+          "financial_aid": Number(this.todo.value.financial_aid)
+        }, {headers: this.headers}).subscribe(data => {
+            console.log(data['_body']);
+           }, error => {
+            console.log(error);
+           });
        }, error => {
         console.log(error);
-      });
+       });
+
+
+    for (let i =0; i< this.scoresArray.length; i++){
+      this.http.post(`${this.API_URL}/exams`, this.scoresArray[i], {headers: this.headers}).subscribe(data => {
+          console.log(data['_body']);
+         }, error => {
+          console.log(error);
+        });
+    };
+
+
   }
 
   //mentee: Mentee;

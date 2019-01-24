@@ -18,14 +18,16 @@ export class MentorListingPage {
   mentors: Mentor[] = [];
   copyOfMentors: Mentor[] = [];
 
-  constructor(private route: ActivatedRoute,
-  private mentorService: MentorService,
-  private loaderService: LoaderService,
-  private toaster: ToastService) { }
+  constructor(
+    private route: ActivatedRoute,
+  //private mentorService: MentorService,
+  //private loaderService: LoaderService,
+  //private toaster: ToastService
+  ) { }
 
 
   private getMentors(){
-  this.loaderService.presentLoading();
+  //this.loaderService.presentLoading();
   /*
   this.mentorService.getMentorsByDeck(this.mentorDeckGroup, this.mentorDeck).subscribe(
     (mentors: Mentor[]) => {

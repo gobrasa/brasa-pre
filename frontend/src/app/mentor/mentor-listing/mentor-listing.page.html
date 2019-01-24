@@ -1,6 +1,6 @@
-<ion-header>
+<!--ion-header>
   <ion-toolbar>
-    <ion-title>{{menteeDeckGroup}}</ion-title>
+    <ion-title>{{mentorDeckGroup}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
@@ -8,27 +8,50 @@
 </ion-header>
 
 <ion-content padding>
-  <app-search (searchCompleted)="hydratementees($event)" [items]="copyOfmentees" [filteredProperty]="'name'"></app-search>
+  <app-search (searchCompleted)="hydratementors($event)" [items]="copyOfmentors" [filteredProperty]="'name'"></app-search>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-list *ngIf="mentees.length > 0">
-    <ion-mentee *ngFor="let mentee of mentees">
-      <ion-mentee-header>
-        <ion-mentee-subtitle>
-          {{mentee.menteeSet}}
-        </ion-mentee-subtitle>
-        <ion-mentee-title>
-          {{mentee.name}}
-        </ion-mentee-title>
-      </ion-mentee-header>
-      <ion-mentee-content>
-        <div [innerHTML]="mentee.text">
+  <ion-list *ngIf="mentors.length > 0">
+    <ion-mentor *ngFor="let mentor of mentors">
+      <ion-mentor-header>
+        <ion-mentor-subtitle>
+          {{mentor.mentorSet}}
+        </ion-mentor-subtitle>
+        <ion-mentor-title>
+          {{mentor.name}}
+        </ion-mentor-title>
+      </ion-mentor-header>
+      <ion-mentor-content>
+        <div [innerHTML]="mentor.text">
         </div>
-        <ion-button [href]="'/tabs/(mentee:mentee/' + mentee.menteeId + ')'" size='medium' expand='full'>
+        <ion-button [href]="'/tabs/(mentor:mentor/' + mentor.mentorId + ')'" size='medium' expand='full'>
           See Detail
         </ion-button>
-      </ion-mentee-content>
-    </ion-mentee>
+      </ion-mentor-content>
+    </ion-mentor>
+  </ion-list>
+</ion-content-->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mentor
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-card>
+
+      <ion-card-content>
+        <ion-button [href]="'/tabs/mentor'" size='medium' expand='full'>
+          See Detail
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </ion-list>
 </ion-content>

@@ -10,9 +10,11 @@ import { MenteeDetailPage } from './mentee-detail/mentee-detail.page';
 import { LoaderService } from '../shared/service/loader.service'
 import { ToastService } from '../shared/service/toast.service';
 import { AlertService } from '../shared/service/alert.service';
-
+import { MenteeTestPage } from './mentee-test/mentee-test.page';
+import { MenteeEssayPage } from './mentee-essay/mentee-essay.page';
 import { IonicModule } from '@ionic/angular';
 import { MenteePage } from './mentee/mentee.page';
+
 
 /*const routes: Routes = [
   {
@@ -34,6 +36,6 @@ import { MenteePage } from './mentee/mentee.page';
     ReactiveFormsModule,
     IonicModule
   ],
-  declarations: [MenteePage, MenteeDetailPage]
+  declarations: [MenteePage, MenteeDetailPage, MenteeListingPage, MenteeTestPage, MenteeEssayPage]
 })
 export class MenteePageModule {}
