@@ -1,8 +1,8 @@
-"""added mentee2 as test
+"""added exam schedule2
 
-Revision ID: 5cf15e1235b8
-Revises: 334723f1943b
-Create Date: 2019-01-17 00:59:32.548187
+Revision ID: 147c47f3b7a4
+Revises: 6967c6d0629e
+Create Date: 2019-01-25 18:28:23.575653
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5cf15e1235b8'
-down_revision = '334723f1943b'
+revision = '147c47f3b7a4'
+down_revision = '6967c6d0629e'
 branch_labels = None
 depends_on = None
 
