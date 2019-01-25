@@ -24,7 +24,6 @@ def create_app():
         db.init_app(app)
         register_models(app)
 
-        db.create_all()
 
     @app.route('/')
     def index():
