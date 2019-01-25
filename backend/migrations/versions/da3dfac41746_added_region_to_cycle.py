@@ -1,8 +1,8 @@
-"""added mapping mentee universidade
+"""added region to cycle
 
-Revision ID: f8f59365de33
-Revises: ea3e6c91d241
-Create Date: 2019-01-16 23:38:32.392701
+Revision ID: da3dfac41746
+Revises: 
+Create Date: 2019-01-25 18:01:25.035832
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f8f59365de33'
-down_revision = 'ea3e6c91d241'
+revision = 'da3dfac41746'
+down_revision = None
 branch_labels = None
 depends_on = None
 

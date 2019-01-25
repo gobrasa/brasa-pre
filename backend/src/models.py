@@ -3,7 +3,20 @@ import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from database import db
+from backend.src.database import db
+
+
+class ExamSchedule(db.Model):
+    __tablename__ = 'scheduled_exams'
+
+    # 1 mentee, many exam schedules
+    id = db.Column(db.Integer, primary_key=True)
+    realization_date = db.Column(db.DateTime, nullable=False)
+    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+
+    exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'))
+    exam = db.relationship("Exams")
+
 
 class Mentee(db.Model):
     __tablename__ = 'mentees'
@@ -19,8 +32,11 @@ class Mentee(db.Model):
     financial_aid = db.Column(db.Boolean, nullable=False)
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
 
+    # Exam schedule
+    exam_schedules = db.relationship("ExamSchedule")
+
     # ToDo - add relationship to universities
-    # ToDo - add relationship (1 mentor has 1 cycle)
+    # ToDo - add relationship (1 mentee has 1 cycle)
 
 class Mentor(db.Model):
     __tablename__ = 'mentors'
@@ -69,6 +85,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
 
+    # Uploads
+    uploads = db.relationship("Uploads")
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -100,7 +119,7 @@ class University(db.Model):
     name = db.Column(db.String(120), index=True, unique=True)
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
-    country_iso_code = db.Column(db.String(120))
+    country_iso_code = db.Column(db.String(3))
 
 class Message(db.Model):
 
@@ -137,3 +156,18 @@ class UniversityApplication(db.Model):
 
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_applications")
+
+
+# ToDo - implement role class
+#class Role(db.Model):
+#    pass
+
+class Uploads(db.Model):
+    __tablename__ = "uploads"
+
+    upload_id = db.Column(db.Integer, primary_key=True)
+    link = db.Column(db.String(120), index=True, unique=True)
+    # ToDo - add relationship to mentee and mentor
+    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'))
+
+
