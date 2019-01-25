@@ -3,7 +3,7 @@ import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from backend.src.database import db
+from database import db
 
 
 class ExamSchedule(db.Model):
@@ -16,6 +16,8 @@ class ExamSchedule(db.Model):
 
     exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'))
     exam = db.relationship("Exams")
+
+    test13 = db.Column(db.DateTime, nullable=False)
 
 
 class Mentee(db.Model):
