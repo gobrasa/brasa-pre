@@ -17,8 +17,6 @@ class ExamSchedule(db.Model):
     exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'))
     exam = db.relationship("Exams")
 
-    test13 = db.Column(db.DateTime, nullable=False)
-
 
 class Mentee(db.Model):
     __tablename__ = 'mentees'
