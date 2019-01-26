@@ -16,6 +16,7 @@ class ExamSchedule(db.Model):
 
     exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'))
     exam = db.relationship("Exams")
+    score = db.Column(db.String(20))  # Not sure whether score is A or 100
 
 
 class Mentee(db.Model):
@@ -27,6 +28,8 @@ class Mentee(db.Model):
 
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
     username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
     financial_aid = db.Column(db.Boolean, nullable=False)
@@ -42,6 +45,10 @@ class Mentor(db.Model):
     __tablename__ = 'mentors'
 
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+
     # ToDo - add column definitions
 
     mentees = db.relationship(Mentee.__name__)
@@ -141,10 +148,10 @@ class Exams(db.Model):
     __tablename__ = "exams"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
+
     category = db.Column(db.String(120))
     subcategory = db.Column(db.String(120))
-    score = db.Column(db.String(20)) # Not sure whether score is A or 100
+
 
 class UniversityApplication(db.Model):
     __tablename__ = "university_applications"
