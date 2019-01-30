@@ -1,0 +1,82 @@
+<!--ion-header>
+  <ion-toolbar>
+    <ion-title>{{mentee?.name}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="mentee && mentee.menteeId">
+    <ion-mentee>
+      <img [src]="mentee.img" (error)="updateImage($event)">
+      <ion-mentee-content>
+        <ion-mentee-title>
+          {{mentee?.name}}
+        </ion-mentee-title>
+        <p [innerHTML]="mentee?.text"></p>
+        <p>{{mentee?.flavor}}</p>
+        <ion-mentee-title>
+          <span class='mentee-stats-title'>Stats</span>
+        </ion-mentee-title>
+        <p *ngIf="mentee.name"><b>Name: </b> {{mentee.name}}</p>
+        <p *ngIf="mentee.scores"><b>Scores: </b> {{mentee.scores}}</p>
+        <p *ngIf="mentee.essay"><b>Essay: </b> {{mentee.essay}}</p>
+      </ion-mentee-content>
+    </ion-mentee>
+  </div>
+</ion-content-->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mentee
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <ion-img src="/assets/shapes.svg"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle>Bem-vindo!</ion-card-subtitle>
+        <ion-card-title>Pagina inicial - Brasa Pré</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Placeholder</p>
+      </ion-card-content>
+    </ion-card>
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+      <ion-item>
+        <ion-label>Nome Completo</ion-label>
+        <ion-input type="text" formControlName="username"></ion-input>
+      </ion-item>
+      <!--ion-item>
+        <ion-label>Nome Completo do seu Mentor</ion-label>
+        <ion-input type="text" formControlName="mentor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cidade</ion-label>
+        <ion-input type="text" formControlName="city"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-input type="text" formControlName="state"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Precisa de Financial Aid?</ion-label>
+          <ion-select formControlName="financial_aid">
+            <ion-select-option value="true">Sim</ion-select-option>
+            <ion-select-option value="false">Não</ion-select-option>
+          </ion-select>
+      </ion-item-->
+
+      
+
+      <button ion-button type="submit" [disabled]="!todo.valid" (click)="logForm()">Submit</button>
+    </form>
+</ion-content>
