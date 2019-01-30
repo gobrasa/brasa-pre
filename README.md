@@ -37,7 +37,7 @@ pytest tests/test_database.py
 
 ```bash
 cd backend
-python src/manage.py db revision -m "added region to cycle" --autogenerate
+python src/manage.py db migrate -m "created initial tables"
 ```
 
 If any db operations need to be added, add manually to the .py file created inside the migrations folder.
