@@ -86,11 +86,14 @@ def create_app():
     def cors_endpoint():
         return "Hello, cross-origin-world!"
 
+    @app.route("/check_user_exists/<username>", methods=['GET'])
+    def check_username_exists(username):
+        users = User.query.filter_by(username=username).first_or_404()
+        print (users)
+        return '',200
 
     return app
 
-
-access_password = 'hello-there'
 
 def set_password_hash(**kwargs):
     pw = request.get_json()['password']
