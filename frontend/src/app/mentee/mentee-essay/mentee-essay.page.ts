@@ -28,8 +28,8 @@ export class MenteeEssayPage {
  AddEssay(){
    this.essayArray.push({'link':''});
  };
- RemoveEssay(){
-   this.essayArray.pop();
+ RemoveEssay(idx){
+   this.essayArray.splice(idx, 1);
  };
 
 

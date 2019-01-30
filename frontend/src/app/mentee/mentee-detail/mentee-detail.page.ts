@@ -21,7 +21,8 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class MenteeDetailPage {
   private todo : FormGroup;
-  private readonly API_URL = 'http://brasa-pre.herokuapp.com/api';
+  //private readonly API_URL = 'http://brasa-pre.herokuapp.com/api';
+  private readonly API_URL = 'http://bce8300d.ngrok.io';
   public satArray:any=[];
   public scoresArray:any=[];
   public satSubjectsArray:any=[];
@@ -76,34 +77,42 @@ export class MenteeDetailPage {
   }
   public logForm(){
     console.log(this.todo.value)
-    console.log(this.http.post(`${this.API_URL}/pre_users`, this.todo.value, {headers: this.headers}))
-    this.http.post(`${this.API_URL}/pre_users`, {
+    console.log(this.http.post(`${this.API_URL}/register_mentee`, this.todo.value, {headers: this.headers}))
+    console.log('ˆˆ')
+    this.http.post(`${this.API_URL}/register_mentee`, {
       "username":this.todo.value.username,
-      "email": this.todo.value.email
+      "city": this.todo.value.city,
+      //"email": this.todo.value.email
+      "financial_aid": 1
     }, {headers: this.headers}).subscribe(data => {
+      console.log(data['_body']);
+      /*
         console.log(data['_body']);
-        this.http.post(`${this.API_URL}/mentees`, {
+        this.http.post(`${this.API_URL}/api/mentees`, {
           "username":this.todo.value.username,
-          "city": this.todo.value.city,
-          "state": this.todo.value.state,
-          "financial_aid": Number(this.todo.value.financial_aid)
+          //"city": this.todo.value.city,
+          //"state": this.todo.value.state,
+          "financial_aid": 1
+          //Number(this.todo.value.financial_aid)
         }, {headers: this.headers}).subscribe(data => {
             console.log(data['_body']);
            }, error => {
             console.log(error);
            });
+
+           */
        }, error => {
         console.log(error);
        });
 
 
-    for (let i =0; i< this.scoresArray.length; i++){
+    /*for (let i =0; i< this.scoresArray.length; i++){
       this.http.post(`${this.API_URL}/exams`, this.scoresArray[i], {headers: this.headers}).subscribe(data => {
           console.log(data['_body']);
          }, error => {
           console.log(error);
         });
-    };
+    };*/
 
 
   }

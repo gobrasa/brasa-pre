@@ -28,8 +28,8 @@ export class MenteeTestPage {
  AddScore(){
    this.scoresArray.push({'category':'','subcategory':'', 'score': ''});
  };
- RemoveScore(){
-   this.scoresArray.pop();
+ RemoveScore(idx){
+   this.scoresArray.splice(idx, 1);
  };
 
 

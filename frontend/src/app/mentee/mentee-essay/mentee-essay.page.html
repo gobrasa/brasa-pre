@@ -29,9 +29,10 @@
             <br>
             <ion-label>Link</ion-label>
             <ion-input type="text"  text-right  [(ngModel)]="essayArray[idx].category" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-button  (click)="RemoveEssay(idx)">Remover essay</ion-button>
         </ion-item>
         <ion-button  (click)="AddEssay()">Adicionar outra essay</ion-button>
-        <ion-button  (click)="RemoveEssay()">Remover ultima essay</ion-button>
+
 
 
       <ion-button type="submit" [disabled]="!todo.valid">Submit</ion-button>
