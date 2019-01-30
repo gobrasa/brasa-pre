@@ -23,9 +23,6 @@ class Mentee(db.Model):
     __tablename__ = 'mentees'
 
     id = db.Column(db.Integer, primary_key=True)
-
-    # ToDo - add column definitions
-
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
     username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
     first_name = db.Column(db.String(50))
@@ -40,6 +37,22 @@ class Mentee(db.Model):
 
     # ToDo - add relationship to universities
     # ToDo - add relationship (1 mentee has 1 cycle)
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'mentor_id': self.mentor_id,
+            'username': self.username,
+            'first_name': self.first_name,
+            'last_name' : self.last_name,
+            'city' : self.city,
+            'state': self.state,
+            'financial_aid': self.financial_aid,
+            'cycle_id' : self.cycle_id,
+            'exam_schedules': self.exam_schedules
+        }
 
 class Mentor(db.Model):
     __tablename__ = 'mentors'
