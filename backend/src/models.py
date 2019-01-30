@@ -96,6 +96,11 @@ class Cycles(db.Model):
     mentees = db.relationship(Mentee.__name__)
     mentors = db.relationship(Mentor.__name__)
 
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    role_name = db.Column(db.String(30), unique=True)
+    users = db.relationship("User")
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "pre_users"
@@ -104,8 +109,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-
-    # Uploads
+    role_name = db.Column(db.String(30), db.ForeignKey('role.role_name'))
     uploads = db.relationship("Uploads")
 
     @property
