@@ -21,7 +21,7 @@
       </ion-card-content>
     </ion-card>
     <form [formGroup]="todo" (ngSubmit)="logForm()">
-      
+
        <br>
        <ion-label>Reporte seus resultados em provas (SAT, TOEFL ...). Adicione campos conforme necessário:</ion-label>
        <br>
@@ -33,9 +33,10 @@
             <ion-input type="text"  text-right  [(ngModel)]="scoresArray[idx].subcategory" [ngModelOptions]="{standalone: true}"></ion-input>
             <ion-label>Nota</ion-label>
             <ion-input type="text"  text-right  [(ngModel)]="scoresArray[idx].score" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-button  (click)="RemoveScore(idx)">Remover Prova</ion-button>
         </ion-item>
         <ion-button  (click)="AddScore()">Adicionar Prova</ion-button>
-        <ion-button  (click)="RemoveScore()">Remover Prova</ion-button>
+
 
 
       <ion-button type="submit" [disabled]="!todo.valid">Submit</ion-button>
