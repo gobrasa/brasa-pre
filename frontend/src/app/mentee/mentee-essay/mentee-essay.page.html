@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mentee
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <ion-img src="/assets/shapes.svg"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle>Bem-vindo!</ion-card-subtitle>
+        <ion-card-title>Pagina inicial - Brasa Pré</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Placeholder</p>
+      </ion-card-content>
+    </ion-card>
+    <form [formGroup]="todo" (ngSubmit)="logForm()">
+
+       <br>
+       <ion-label>Envie o link do google doc com sua essay</ion-label>
+       <br>
+       <ion-item *ngFor="let att of essayArray; let idx = index">
+            <br>
+            <ion-label>Link</ion-label>
+            <ion-input type="text"  text-right  [(ngModel)]="essayArray[idx].category" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-button  (click)="RemoveEssay(idx)">Remover essay</ion-button>
+        </ion-item>
+        <ion-button  (click)="AddEssay()">Adicionar outra essay</ion-button>
+
+
+
+      <ion-button type="submit" [disabled]="!todo.valid">Submit</ion-button>
+    </form>
+</ion-content>

@@ -1,0 +1,32 @@
+<!--ion-tabs>
+  <ion-tab label="Cards" icon="home" href="/tabs/mentee">
+    <ion-router-outlet name="mentee"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab label="About" icon="information-circle" href="/tabs/mentor">
+    <ion-router-outlet name="mentor"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab label="Contact" icon="contacts" href="/tabs/informacoes">
+    <ion-router-outlet name="informacoes"></ion-router-outlet>
+  </ion-tab>
+</ion-tabs-->
+
+
+<ion-tabs>
+  <ion-tab-bar>
+    <ion-tab-button tab="mentee/listing">
+      <ion-icon icon="home"></ion-icon>
+      <ion-label>Mentee</ion-label>
+      <ion-badge>1</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="mentor/listing">
+      <ion-icon icon="home"></ion-icon>
+      <ion-label>Mentor</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="informacoes">
+      <ion-icon icon="home"></ion-icon>
+      <ion-label>Informações</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
