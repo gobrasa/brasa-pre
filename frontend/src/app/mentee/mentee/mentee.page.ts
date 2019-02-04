@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Mentee } from '../shared/mentee.model';
 
 @Component({
   selector: 'app-mentee',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mentee.page.scss'],
 })
 export class MenteePage implements OnInit {
+
+  private menteeDecks: Mentee;
 
   constructor() { }
 

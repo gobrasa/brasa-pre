@@ -14,6 +14,7 @@ import { MenteeTestPage } from './mentee-test/mentee-test.page';
 import { MenteeEssayPage } from './mentee-essay/mentee-essay.page';
 import { IonicModule } from '@ionic/angular';
 import { MenteePage } from './mentee/mentee.page';
+import { MenteeInformationPage } from './mentee-information/mentee-information.page';
 
 
 /*const routes: Routes = [
@@ -34,8 +35,21 @@ import { MenteePage } from './mentee/mentee.page';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule
+    IonicModule,
+    HttpClientModule
   ],
-  declarations: [MenteePage, MenteeDetailPage, MenteeListingPage, MenteeTestPage, MenteeEssayPage]
+  providers: [
+    MenteeService
+  ],
+  declarations: [
+    MenteePage, 
+    MenteeDetailPage, 
+    MenteeListingPage, 
+    MenteeTestPage, 
+    MenteeEssayPage,
+    MenteeListingPage,
+    MenteeListComponent,
+    MenteeInformationPage
+  ]
 })
 export class MenteePageModule {}

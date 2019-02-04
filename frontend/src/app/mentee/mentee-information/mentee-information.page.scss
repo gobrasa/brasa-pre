@@ -1,7 +1,3 @@
-span {
-	display: inline-block;
-}
-
 .username{
 	margin-top: 10px;
 }
@@ -20,4 +16,8 @@ span {
 
 ion-card-content{
 	margin-top: -20px;
+}
+
+ion-card div{
+    display: block;
 }

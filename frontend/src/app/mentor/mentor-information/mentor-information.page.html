@@ -1,0 +1,41 @@
+<ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title>
+            Mentor
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content padding>
+        <ion-list>
+          <ion-card *ngFor="let mentorDeck of mentorDeck">
+            <div *ngIf="mentorDeck.id == mentorId">
+              <ion-card-content>
+            
+                  <h2>{{ mentorDeck.first_name }}</h2>
+                  <h2>{{ mentorDeck.last_name }}</h2>
+                  <h2>{{ mentorDeck.city }}</h2>
+                  <h2>{{ mentorDeck.state }}</h2>
+    
+                  <ion-button [href]="'tabs/mentor/detail'" size='medium' expand='full'>
+                    Atualizar informações
+                  </ion-button>
+                  <ion-button [href]="'tabs/mentor/test'" size='medium' expand='full'>
+                    Adicionar prova
+                  </ion-button>
+                  <ion-button [href]="'tabs/mentor/essay'" size='medium' expand='full'>
+                    Adicionar essay
+                  </ion-button>
+    
+                  <!-- <app-card-list></app-card-list> -->
+    
+    
+                </ion-card-content>
+            </div>
+          </ion-card>
+        </ion-list>
+      </ion-content>
+      

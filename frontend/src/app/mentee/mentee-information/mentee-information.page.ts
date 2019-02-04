@@ -6,30 +6,35 @@ import { LoaderService } from '../../shared/service/loader.service';
 import { ToastService } from '../../shared/service/toast.service';
 
 @Component({
-  selector: 'app-mentee-listing',
-  templateUrl: './mentee-listing.page.html',
-  styleUrls: ['./mentee-listing.page.scss']
+  selector: 'app-mentee-information',
+  templateUrl: './mentee-information.page.html',
+  styleUrls: ['./mentee-information.page.scss']
 })
 
-export class MenteeListingPage {
+export class MenteeInformationPage {
 
-  private readonly ALLOWED_DESCRIPTIONS = ["objects"];
+  menteeDeck: Mentee;
+  menteeId: any;
 
-  private menteeDecks: Mentee;
 
   constructor(private route: ActivatedRoute,
               private menteeService: MenteeService) { 
     
     this.getMentees();
   }
-  
+
+
    private getMentees() {
     this.menteeService.getAllmenteeDecks().subscribe(menteeDecks => {
-        this.menteeDecks = menteeDecks.objects;
+         this.menteeDeck = menteeDecks.objects;
+         this.menteeId = this.route.snapshot.paramMap.get('id');
+        // this.FirstName = this.menteeDeck.first_name;
+        // this.LastName = this.route.snapshot.paramMap.get('last_name');
+        // this.City = this.route.snapshot.paramMap.get('city');
+        // this.State = this.route.snapshot.paramMap.get('state');
+     
       
     });
   }
 
-  
-  
 }

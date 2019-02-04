@@ -33,25 +33,30 @@
   </ion-list>
 </ion-content-->
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Mentor
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding>
-  <ion-list>
-    <ion-card>
-
-      <ion-card-content>
-        <ion-button [href]="'/tabs/mentor'" size='medium' expand='full'>
-          See Detail
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-</ion-content>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        Mentor
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <ion-list>
+      <ion-card *ngFor="let mentorDeck of mentorDecks">
+  
+        <!-- <h2>{{ mentorDeck.first_name }}</h2>
+        <h2>{{ mentorDeck.last_name }}</h2>
+        <app-card-list></app-card-list> -->
+  
+        <ion-card-content>
+      
+          <ion-button [href]="'/tabs/mentor/listing/' + mentorDeck.id" size='medium' expand='full'>
+            See Detail
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </ion-content>
