@@ -1,8 +1,8 @@
-"""initial tables
+"""initial version
 
-Revision ID: 6e5d87f38a4c
+Revision ID: 40752845856d
 Revises: 
-Create Date: 2019-01-25 20:26:13.694783
+Create Date: 2019-01-31 23:56:30.182849
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6e5d87f38a4c'
+revision = '40752845856d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,15 +26,18 @@ def upgrade():
     sa.Column('region', sa.String(length=60), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('pre_users',
+    op.create_table('exams',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('username', sa.String(length=64), nullable=True),
-    sa.Column('email', sa.String(length=120), nullable=True),
-    sa.Column('password_hash', sa.String(length=128), nullable=True),
+    sa.Column('category', sa.String(length=120), nullable=True),
+    sa.Column('subcategory', sa.String(length=120), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_pre_users_email'), 'pre_users', ['email'], unique=True)
-    op.create_index(op.f('ix_pre_users_username'), 'pre_users', ['username'], unique=True)
+    op.create_table('role',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('role_name', sa.String(length=30), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('role_name')
+    )
     op.create_table('universities',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=120), nullable=True),
@@ -44,29 +47,36 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_universities_name'), 'universities', ['name'], unique=True)
-    op.create_table('exams',
+    op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('category', sa.String(length=120), nullable=True),
-    sa.Column('subcategory', sa.String(length=120), nullable=True),
-    sa.Column('score', sa.String(length=20), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['pre_users.id'], ),
+    sa.Column('username', sa.String(length=64), nullable=True),
+    sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('password_hash', sa.String(length=128), nullable=True),
+    sa.Column('role_name', sa.String(length=30), nullable=True),
+    sa.ForeignKeyConstraint(['role_name'], ['role.role_name'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
+    op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=True)
     op.create_table('mentors',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=64), nullable=True),
+    sa.Column('first_name', sa.String(length=50), nullable=True),
+    sa.Column('last_name', sa.String(length=50), nullable=True),
     sa.Column('cycle_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['cycle_id'], ['cycles.id'], ),
+    sa.ForeignKeyConstraint(['username'], ['users.username'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_index(op.f('ix_mentors_username'), 'mentors', ['username'], unique=True)
     op.create_table('messages',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('sender_id', sa.Integer(), nullable=True),
     sa.Column('recipient_id', sa.Integer(), nullable=True),
     sa.Column('body', sa.String(length=140), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['recipient_id'], ['pre_users.id'], ),
-    sa.ForeignKeyConstraint(['sender_id'], ['pre_users.id'], ),
+    sa.ForeignKeyConstraint(['recipient_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['sender_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_messages_timestamp'), 'messages', ['timestamp'], unique=False)
@@ -74,7 +84,7 @@ def upgrade():
     sa.Column('upload_id', sa.Integer(), nullable=False),
     sa.Column('link', sa.String(length=120), nullable=True),
     sa.Column('username', sa.String(length=64), nullable=True),
-    sa.ForeignKeyConstraint(['username'], ['pre_users.username'], ),
+    sa.ForeignKeyConstraint(['username'], ['users.username'], ),
     sa.PrimaryKeyConstraint('upload_id')
     )
     op.create_index(op.f('ix_uploads_link'), 'uploads', ['link'], unique=True)
@@ -82,13 +92,15 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('mentor_id', sa.Integer(), nullable=True),
     sa.Column('username', sa.String(length=64), nullable=True),
+    sa.Column('first_name', sa.String(length=50), nullable=True),
+    sa.Column('last_name', sa.String(length=50), nullable=True),
     sa.Column('city', sa.String(length=50), nullable=True),
     sa.Column('state', sa.String(length=50), nullable=True),
     sa.Column('financial_aid', sa.Boolean(), nullable=False),
     sa.Column('cycle_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['cycle_id'], ['cycles.id'], ),
     sa.ForeignKeyConstraint(['mentor_id'], ['mentors.id'], ),
-    sa.ForeignKeyConstraint(['username'], ['pre_users.username'], ),
+    sa.ForeignKeyConstraint(['username'], ['users.username'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_mentees_username'), 'mentees', ['username'], unique=True)
@@ -106,6 +118,7 @@ def upgrade():
     sa.Column('realization_date', sa.DateTime(), nullable=False),
     sa.Column('mentee_id', sa.Integer(), nullable=False),
     sa.Column('exam_id', sa.Integer(), nullable=True),
+    sa.Column('score', sa.String(length=20), nullable=True),
     sa.ForeignKeyConstraint(['exam_id'], ['exams.id'], ),
     sa.ForeignKeyConstraint(['mentee_id'], ['mentees.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -132,12 +145,14 @@ def downgrade():
     op.drop_table('uploads')
     op.drop_index(op.f('ix_messages_timestamp'), table_name='messages')
     op.drop_table('messages')
+    op.drop_index(op.f('ix_mentors_username'), table_name='mentors')
     op.drop_table('mentors')
-    op.drop_table('exams')
+    op.drop_index(op.f('ix_users_username'), table_name='users')
+    op.drop_index(op.f('ix_users_email'), table_name='users')
+    op.drop_table('users')
     op.drop_index(op.f('ix_universities_name'), table_name='universities')
     op.drop_table('universities')
-    op.drop_index(op.f('ix_pre_users_username'), table_name='pre_users')
-    op.drop_index(op.f('ix_pre_users_email'), table_name='pre_users')
-    op.drop_table('pre_users')
+    op.drop_table('role')
+    op.drop_table('exams')
     op.drop_table('cycles')
     # ### end Alembic commands ###

@@ -1,9 +1,13 @@
-import datetime
+# The examples in this file come from the Flask-SQLAlchemy documentation
+# For more information take a look at:
+# http://flask-sqlalchemy.pocoo.org/2.1/quickstart/#simple-relationships
 
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 from database import db
+
+import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class ExamSchedule(db.Model):
@@ -24,7 +28,7 @@ class Mentee(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
-    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
+    username = db.Column(db.String(64), db.ForeignKey('users.username'), unique=True, index=True)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
     city = db.Column(db.String(50))
@@ -34,9 +38,6 @@ class Mentee(db.Model):
 
     # Exam schedule
     exam_schedules = db.relationship("ExamSchedule")
-
-    # ToDo - add relationship to universities
-    # ToDo - add relationship (1 mentee has 1 cycle)
 
     @property
     def serialize(self):
@@ -58,15 +59,12 @@ class Mentor(db.Model):
     __tablename__ = 'mentors'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'), unique=True, index=True)
+    username = db.Column(db.String(64), db.ForeignKey('users.username'), unique=True, index=True)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
 
-    # ToDo - add column definitions
-
     mentees = db.relationship(Mentee.__name__)
 
-    # ToDo - 1 mentor has 1 cycle
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
 
 class Meetings(db.Model):
@@ -74,9 +72,7 @@ class Meetings(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     datetime = db.Column(db.DateTime, nullable=False)
-    # ToDo - add column definitions
 
-    # ToDo - add relationship (A meeting takes place sometime between 1 mentor and 1 mentee)
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'), nullable=False)
     mentor = db.relationship(Mentor.__name__, backref="meetings")
 
@@ -97,39 +93,45 @@ class Cycles(db.Model):
     mentors = db.relationship(Mentor.__name__)
 
 class Role(db.Model):
+    __tablename__ = "role"
+
     id = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String(30), unique=True)
     users = db.relationship("User")
 
 
-class User(UserMixin, db.Model):
-    __tablename__ = "pre_users"
+class User(db.Model):
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String)
     role_name = db.Column(db.String(30), db.ForeignKey('role.role_name'))
     uploads = db.relationship("Uploads")
+    authenticated = db.Column(db.Boolean, default=False)
 
-    @property
-    def serialize(self):
-        """Return object data in easily serializeable format"""
-        return {
-            'id': self.id,
-            'username':self.username,
-            'email':self.email,
-            'password_hash':self.password_hash,
-            'messages_sent': self.messages_sent,
-        'messages_received': self.messages_received,
-        'last_message_read_time': self.last_message_read_time
-        }
+    def is_active(self):
+        """True, as all users are active."""
+        return True
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+    def get_id(self):
+        """Return the email address to satisfy Flask-Login's requirements."""
+        return self.email
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
+
+    def set_password(self, secret):
+        self.password_hash = generate_password_hash(secret)
+
+    def check_password(self, secret):
+        return check_password_hash(self.password_hash, secret)
 
     def new_messages(self):
         last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
@@ -150,11 +152,8 @@ class Message(db.Model):
     __tablename__ = "messages"
 
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('pre_users.id'))
-
-    #ToDo - add sender and recipient objects as relationships
-
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.datetime.utcnow)
 
@@ -182,16 +181,10 @@ class UniversityApplication(db.Model):
     university = db.relationship(University.__name__, backref="university_applications")
 
 
-# ToDo - implement role class
-#class Role(db.Model):
-#    pass
-
 class Uploads(db.Model):
     __tablename__ = "uploads"
 
     upload_id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(120), index=True, unique=True)
-    # ToDo - add relationship to mentee and mentor
-    username = db.Column(db.String(64), db.ForeignKey('pre_users.username'))
-
+    username = db.Column(db.String(64), db.ForeignKey('users.username'))
 
