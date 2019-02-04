@@ -2,12 +2,14 @@ import logging.config
 
 import os
 from flask import Flask, Blueprint
-from flask_login import LoginManager
 
 import settings
-from api.blog.endpoints.login import ns as login_namespace
-from api.blog.endpoints.categories import ns as blog_categories_namespace
-from api.blog.endpoints.mentees import ns as mentee_namespace
+from api.endpoints.users import ns as blog_categories_namespace
+from api.endpoints.mentees import ns as mentee_namespace
+from api.endpoints.mentors import ns as mentor_namespace
+from api.endpoints.uploads import ns as uploads_namespace
+from api.endpoints.exam_schedules import ns as exam_schedules_namespace
+from api.endpoints.exams import ns as exams_namespace
 from api.restplus import api
 
 from database import db
@@ -20,7 +22,8 @@ log = logging.getLogger(__name__)
 
 def configure_app(flask_app):
     flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = settings.SQLALCHEMY_DATABASE_URI
+    DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI if not None else settings.SQLALCHEMY_DATABASE_URI
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = settings.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
     flask_app.config['RESTPLUS_VALIDATE'] = settings.RESTPLUS_VALIDATE
@@ -34,8 +37,11 @@ def initialize_app(flask_app):
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
     api.add_namespace(blog_categories_namespace)
-    api.add_namespace(login_namespace)
     api.add_namespace(mentee_namespace)
+    api.add_namespace(mentor_namespace)
+    api.add_namespace(uploads_namespace)
+    api.add_namespace(exams_namespace)
+    api.add_namespace(exam_schedules_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
