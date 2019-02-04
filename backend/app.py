@@ -22,8 +22,8 @@ log = logging.getLogger(__name__)
 
 def configure_app(flask_app):
     flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
-    DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI if not None else settings.SQLALCHEMY_DATABASE_URI
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL if not None else settings.SQLALCHEMY_DATABASE_URI
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = settings.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
     flask_app.config['RESTPLUS_VALIDATE'] = settings.RESTPLUS_VALIDATE
