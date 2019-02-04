@@ -11,12 +11,6 @@ pagination = api.model('A page of results', {
 })
 
 
-
-category = api.model('Blog category', {
-    'id': fields.Integer(readOnly=True, description='The unique identifier of a blog category'),
-    'name': fields.String(required=True, description='Category name'),
-})
-
 user_and_pw = api.model('User2', {
     'username':fields.String(readOnly=True, description='username'),
     'password': fields.String(readOnly=True, description='password'),
@@ -40,6 +34,7 @@ user_with_password = api.model('User', {
 })
 
 mentee = api.model('Mentee', {
+    'id': fields.Integer('id'),
     'mentor_id':fields.Integer(readOnly=True, description='mentor_id'),
     'username':fields.String(readOnly=True, description='username'),
     'first_name': fields.String(readOnly=True, description='first_name'),
@@ -48,4 +43,32 @@ mentee = api.model('Mentee', {
     'state': fields.String(readOnly=True, description='state'),
     'financial_aid': fields.Boolean(description='financial_aid'),
     'cycle_id': fields.Integer(description='cycle_id')
+})
+
+mentor = api.model('Mentor', {
+    'id': fields.Integer('id'),
+    'username':fields.String(readOnly=True, description='username'),
+    'first_name': fields.String(readOnly=True, description='first_name'),
+    'last_name': fields.String(readOnly=True, description='last_name'),
+    'cycle_id': fields.Integer(description='cycle_id')
+})
+
+upload = api.model('Uploads', {
+    'id': fields.Integer('id'),
+    'link': fields.String(readOnly=True, description='link to a file in Google Drive'),
+    'username': fields.String(readOnly=True, description='username')
+})
+
+exam_schedule = api.model('Exam_Schedules', {
+    'id': fields.Integer('id'),
+    'realization_date': fields.DateTime(readOnly=True, description='realization date'),
+    'mentee_id': fields.Integer(readOnly=True, description='mentee_id'),
+    'exam_id':fields.Integer(readOnly=True, description='exam_id'),
+    'score': fields.String(readOnly=True, description='score')
+})
+
+exam = api.model('Exams', {
+    'id': fields.Integer('id'),
+    'category': fields.String(readOnly=True, description='category'),
+    'subcategory': fields.String(readOnly=True, description='subcategory')
 })
