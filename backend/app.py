@@ -2,12 +2,14 @@ import logging.config
 
 import os
 from flask import Flask, Blueprint
-from flask_login import LoginManager
 
 import settings
-from api.blog.endpoints.login import ns as login_namespace
-from api.blog.endpoints.categories import ns as blog_categories_namespace
-from api.blog.endpoints.mentees import ns as mentee_namespace
+from api.endpoints.users import ns as blog_categories_namespace
+from api.endpoints.mentees import ns as mentee_namespace
+from api.endpoints.mentors import ns as mentor_namespace
+from api.endpoints.uploads import ns as uploads_namespace
+from api.endpoints.exam_schedules import ns as exam_schedules_namespace
+from api.endpoints.exams import ns as exams_namespace
 from api.restplus import api
 
 from database import db
@@ -34,8 +36,11 @@ def initialize_app(flask_app):
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
     api.add_namespace(blog_categories_namespace)
-    api.add_namespace(login_namespace)
     api.add_namespace(mentee_namespace)
+    api.add_namespace(mentor_namespace)
+    api.add_namespace(uploads_namespace)
+    api.add_namespace(exams_namespace)
+    api.add_namespace(exam_schedules_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)

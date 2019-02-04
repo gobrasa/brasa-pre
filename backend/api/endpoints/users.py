@@ -4,8 +4,8 @@ from flask import request
 from flask_restplus import Resource
 
 from api.Exceptions import RoleNotAllowedException
-from api.blog.business import create_user, delete_user, update_user
-from api.blog.serializers import category, user, user_with_password
+from api.business import create_user, delete_user, update_user
+from api.serializers import user, user_with_password
 from api.restplus import api
 from database.models import User
 

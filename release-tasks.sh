@@ -1,4 +1,5 @@
+#!/usr/bin/env bash
 cd backend
 
 # python src/manage.py db migrate
-python src/manage.py db upgrade
+python manage.py db upgrade
