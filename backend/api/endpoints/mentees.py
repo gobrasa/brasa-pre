@@ -3,17 +3,19 @@ import logging
 from flask import request
 from flask_restplus import Resource
 
-from api.Exceptions import RoleNotAllowedException
-from api.blog.business import create_user, delete_user, update_user, create_mentee, delete_from_table, \
+from api.business import create_mentee, delete_from_table, \
     update_mentee
-from api.blog.serializers import category, user, user_with_password, mentee
+from api.serializers import mentee
 from api.restplus import api
-from database.models import User, Mentee
+from database.models import Mentee
 
 log = logging.getLogger(__name__)
 
 ns = api.namespace('mentees', description='Operations related to mentees')
 
+# ToDo - check if it is a good idea to add basic_role_auth and load users from env variables
+#auth = BasicRoleAuth()
+#auth.add_user(user=os.getenv('ADMIN_USERNAME'), password=os.getenv('ADMIN_PW'), roles='admin')
 
 @ns.route('/')
 class MenteeCollection(Resource):
@@ -21,7 +23,7 @@ class MenteeCollection(Resource):
     @api.marshal_list_with(mentee)
     def get(self):
         """
-        Returns list of blog categories.
+        Returns list of mentees.
         """
         users = Mentee.query.all()
         return users
@@ -30,12 +32,22 @@ class MenteeCollection(Resource):
     @api.expect(mentee)
     def post(self):
         """
-        Creates a new blog category.
+        Creates a new mentee.
         """
         data = request.json
         create_mentee(data)
         return None, 201
 
+@ns.route('/<string:username>')
+@api.response(404, 'username not found')
+class MenteeItemByUsername(Resource):
+
+    @api.marshal_with(mentee)
+    def get(self, username):
+        """
+        Returns a mentee by username.
+        """
+        return Mentee.query.filter(Mentee.username == username).one()
 
 @ns.route('/<int:id>')
 @api.response(404, 'User not found.')
@@ -44,7 +56,7 @@ class MenteeItem(Resource):
     @api.marshal_with(mentee)
     def get(self, id):
         """
-        Returns a category with a list of posts.
+        Returns a mentee by ID.
         """
         return Mentee.query.filter(Mentee.id == id).one()
 
