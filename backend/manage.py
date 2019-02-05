@@ -3,13 +3,15 @@ import os
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from app import app, initialize_app
+import settings
+from app import app, configure_app
 from database import db
 from dotenv import load_dotenv
 load_dotenv()
 
 #app.config.from_object(os.getenv('APP_SETTINGS'))
-initialize_app(app)
+#initialize_app(app)
+print (os.getenv('DATABASE_URL'))
 
 migrate = Migrate(app, db)
 manager = Manager(app)

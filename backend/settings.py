@@ -11,7 +11,7 @@ RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
 
 # SQLAlchemy settings
-#SQLALCHEMY_DATABASE_URI = "postgresql://localhost/brasa_pre5"
+SQLALCHEMY_DATABASE_URI = "postgresql://localhost/brasa_pre5"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
