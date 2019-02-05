@@ -1,21 +1,18 @@
-import datetime
 import logging.config
-
 import os
-from logging import INFO
 
 from dotenv import load_dotenv
 from flask import Flask, Blueprint
+from flask_restful import Api
 
 import settings
-from api.endpoints.users import ns as blog_categories_namespace
+from api.endpoints.exam_schedules import ns as exam_schedules_namespace
+from api.endpoints.exams import ns as exams_namespace
 from api.endpoints.mentees import ns as mentee_namespace
 from api.endpoints.mentors import ns as mentor_namespace
 from api.endpoints.uploads import ns as uploads_namespace
-from api.endpoints.exam_schedules import ns as exam_schedules_namespace
-from api.endpoints.exams import ns as exams_namespace
+from api.endpoints.users import ns as blog_categories_namespace
 from api.restplus import api
-
 from database import db
 
 app = Flask(__name__)
@@ -48,36 +45,28 @@ def register_namespaces(api):
     api.add_namespace(exams_namespace)
     api.add_namespace(exam_schedules_namespace)
 
-
-
 def create_app():
     load_dotenv()
     app = Flask(__name__)
-
-    # ToDo - move SQLALCHEMY_TRACK_MODIFICATIONS to .env file
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     configure_app(app)
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
-
+    
     with app.app_context():
         db.init_app(app)
-        api.init_app(blueprint)
         register_namespaces(api)
         app.register_blueprint(blueprint)
 
 
     @app.route('/')
     def index():
-        return 'Hello from brasa-pre! {}'.format(datetime.datetime.now())
+        return 'Hello from index!'
 
     return app
-
 
 
 app = create_app()
 
 if __name__ == '__main__':
     app = create_app()
-    app.run()
+    app.run(debug=True)
