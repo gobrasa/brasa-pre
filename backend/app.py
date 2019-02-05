@@ -22,7 +22,9 @@ log = logging.getLogger(__name__)
 
 def configure_app(flask_app):
     flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     DATABASE_URL = os.getenv('DATABASE_URL')
+    flask_app.config['CORS_HEADERS'] = 'Content-Type'
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL if not None else settings.SQLALCHEMY_DATABASE_URI
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = settings.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
@@ -35,16 +37,25 @@ def initialize_app(flask_app):
     configure_app(flask_app)
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
-    api.init_app(blueprint)
+
+    with app.app_context():
+        api.init_app(blueprint)
+        register_namespaces(api)
+        flask_app.register_blueprint(blueprint)
+        db.init_app(flask_app)
+
+
+
+    db.init_app(flask_app)
+
+def register_namespaces(api):
+
     api.add_namespace(blog_categories_namespace)
     api.add_namespace(mentee_namespace)
     api.add_namespace(mentor_namespace)
     api.add_namespace(uploads_namespace)
     api.add_namespace(exams_namespace)
     api.add_namespace(exam_schedules_namespace)
-    flask_app.register_blueprint(blueprint)
-
-    db.init_app(flask_app)
 
 
 def main():
@@ -54,7 +65,7 @@ def main():
 
 
     log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
-    app.run(debug=settings.FLASK_DEBUG)
+    app.run()
 
 
 if __name__ == "__main__":
