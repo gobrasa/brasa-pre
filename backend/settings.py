@@ -1,3 +1,4 @@
+# ToDo - move everything to .env file
 # Flask settings
 #FLASK_SERVER_NAME = 'localhost:8888'
 import os
