@@ -62,10 +62,11 @@ def main():
     initialize_app(app)
 
     #init_login_routes(app)
+    print("oi")
 
 
     log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
-    app.run()
+    app.run(debug=True)
 
 
 if __name__ == "__main__":
