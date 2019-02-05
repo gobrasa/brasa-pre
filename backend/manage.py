@@ -1,12 +1,12 @@
 import os
 
+from dotenv import load_dotenv
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-import settings
-from app import app, configure_app
+from app import app
 from database import db
-from dotenv import load_dotenv
+
 load_dotenv()
 
 #app.config.from_object(os.getenv('APP_SETTINGS'))

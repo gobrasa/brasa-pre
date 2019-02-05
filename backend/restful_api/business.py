@@ -2,7 +2,7 @@ import sqlalchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from api.Exceptions import RoleNotAllowedException
+from restful_api.Exceptions import RoleNotAllowedException
 from database import db
 from database.models import User, Role, Mentee, Mentor, Uploads, Exams, ExamSchedule
 from settings import SQLALCHEMY_DATABASE_URI

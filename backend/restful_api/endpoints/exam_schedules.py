@@ -1,16 +1,23 @@
 import logging
 
 from flask import request
-from flask_restplus import Resource
+from flask_restful import fields
+from flask_restplus import Namespace, Resource
 
-from api.business import delete_from_table, create_exam_schedule, update_exam_schedule
-from api.restplus import api
-from api.serializers import exam_schedule
 from database.models import ExamSchedule
+from restful_api.business import delete_from_table, create_exam_schedule, update_exam_schedule
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('exam_schedules', description='Operations related to exam_schedules')
+ns = Namespace('exam_schedules', description='Operations related to exam_schedules')
+
+exam_schedule = ns.model('Exam_Schedules', {
+    'id': fields.Integer('id'),
+    'realization_date': fields.DateTime(readOnly=True, description='realization date'),
+    'mentee_id': fields.Integer(readOnly=True, description='mentee_id'),
+    'exam_id':fields.Integer(readOnly=True, description='exam_id'),
+    'score': fields.String(readOnly=True, description='score')
+})
 
 
 @ns.route('/')
