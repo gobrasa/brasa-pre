@@ -61,6 +61,22 @@ def create_app():
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
 
+def create_app():
+    load_dotenv()
+    app = Flask(__name__)
+
+    with app.app_context():
+        db.init_app(app)
+        api.init_app(blueprint)
+        register_namespaces(api)
+        app.register_blueprint(blueprint)
+    # ToDo - move SQLALCHEMY_TRACK_MODIFICATIONS to .env file
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    configure_app(app)
+
+    blueprint = Blueprint('api', __name__, url_prefix='/api')
+
     with app.app_context():
         db.init_app(app)
         api.init_app(blueprint)
@@ -70,7 +86,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        return 'Hello from brasa-pre! {}'.format(datetime.datetime.now())
+        return 'Hello from index!'
 
     return app
 
@@ -80,4 +96,4 @@ app = create_app()
 
 if __name__ == '__main__':
     app = create_app()
-    app.run()
+    app.run(debug=True)
