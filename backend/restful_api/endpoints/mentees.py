@@ -1,17 +1,28 @@
 import logging
 
 from flask import request
-from flask_restplus import Resource
+from flask_restful import fields
+from flask_restplus import Resource, Namespace
 
-from api.business import create_mentee, delete_from_table, \
-    update_mentee
-from api.serializers import mentee
-from api.restplus import api
 from database.models import Mentee
+from restful_api.business import create_mentee, delete_from_table, \
+    update_mentee
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('mentees', description='Operations related to mentees')
+ns = Namespace('mentees', description='Operations related to mentees')
+
+mentee = ns.model('Mentee', {
+    'id': fields.Integer('id'),
+    'mentor_id':fields.Integer(readOnly=True, description='mentor_id'),
+    'username':fields.String(readOnly=True, description='username'),
+    'first_name': fields.String(readOnly=True, description='first_name'),
+    'last_name': fields.String(readOnly=True, description='last_name'),
+    'city': fields.String(readOnly=True, description='city'),
+    'state': fields.String(readOnly=True, description='state'),
+    'financial_aid': fields.Boolean(description='financial_aid'),
+    'cycle_id': fields.Integer(description='cycle_id')
+})
 
 # ToDo - check if it is a good idea to add basic_role_auth and load users from env variables
 #auth = BasicRoleAuth()

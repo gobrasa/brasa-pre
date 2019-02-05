@@ -1,16 +1,24 @@
 import logging
 
 from flask import request
-from flask_restplus import Resource
+from flask_restful import fields
+from flask_restplus import Resource, Namespace
 
-from api.business import delete_from_table
-from api.restplus import api
-from api.serializers import mentor
 from database.models import Mentee, Mentor
+from restful_api.business import delete_from_table
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('mentors', description='Operations related to mentors')
+ns = Namespace('mentors', description='Operations related to mentors')
+
+
+mentor = ns.model('Mentor', {
+    'id': fields.Integer('id'),
+    'username':fields.String(readOnly=True, description='username'),
+    'first_name': fields.String(readOnly=True, description='first_name'),
+    'last_name': fields.String(readOnly=True, description='last_name'),
+    'cycle_id': fields.Integer(description='cycle_id')
+})
 
 
 @ns.route('/')
