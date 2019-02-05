@@ -45,18 +45,21 @@ def register_namespaces(api):
     api.add_namespace(exams_namespace)
     api.add_namespace(exam_schedules_namespace)
 
+
 def create_app():
     load_dotenv()
     app = Flask(__name__)
-    configure_app(app)
+    return init_app(app)
 
+
+def init_app(app):
+    configure_app(app)
     blueprint = Blueprint('api', __name__, url_prefix='/api')
-    
+
     with app.app_context():
         db.init_app(app)
         register_namespaces(api)
         app.register_blueprint(blueprint)
-
 
     @app.route('/')
     def index():
