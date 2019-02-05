@@ -1,11 +1,6 @@
-import sqlalchemy
-from sqlalchemy.orm import sessionmaker, scoped_session
-from werkzeug.security import generate_password_hash, check_password_hash
-
-from restful_api.Exceptions import RoleNotAllowedException
 from database import db
 from database.models import User, Role, Mentee, Mentor, Uploads, Exams, ExamSchedule
-from settings import SQLALCHEMY_DATABASE_URI
+from restful_api.Exceptions import RoleNotAllowedException
 
 
 def create_user(data):
@@ -31,9 +26,10 @@ def check_role_name_valid(role_name):
 
 def update_user(user_id, data):
     user = User.query.filter(User.id == user_id).one()
-    user.username = data.get('username')
-    user.email = data.get('email')
-    user.role_name = data.get('role_name') if data.get('role_name') is not None else user.role_name
+
+    user.username = get_default(data, user, 'username')
+    user.email = get_default(data, user, 'email')
+    user.role_name = get_default(data, user, 'role_name')
 
     check_role_name_valid(user.role_name)
 
@@ -93,8 +89,8 @@ def create_exam(data):
 def update_exam(id, data):
     exam = Exams.query.filter(Exams.id == id).one()
 
-    exam.category = data.get('category')
-    exam.subcategory = data.get('subcategory')
+    exam.category = get_default(data, exam, 'category')
+    exam.subcategory = get_default(data, exam, 'subcategory')
 
     Exams.query.session.add(exam)
     Exams.query.session.commit()
@@ -118,24 +114,28 @@ def create_exam_schedule(data):
 def update_exam_schedule(id, data):
     exam_schedule = ExamSchedule.query.filter(ExamSchedule.id == id).one()
 
-    exam_schedule.realization_date = data.get('realization_date')
-    exam_schedule.mentee_id = data.get('mentee_id')
-    exam_schedule.exam_id = data.get('exam_id')
-    exam_schedule.score = data.get('score')
+    exam_schedule.realization_date = get_default(data, exam_schedule, 'realization_date')
+
+    exam_schedule.mentee_id = get_default(data, exam_schedule, 'mentee_id')
+    exam_schedule.exam_id = get_default(data, exam_schedule, 'exam_id')
+    exam_schedule.score = get_default(data, exam_schedule, 'score')
 
     ExamSchedule.query.session.add(exam_schedule)
     ExamSchedule.query.session.commit()
 
+def get_default(data, obj,param):
+    return data.get(param) if data.get(param) else obj.__getattribute__(param)
+
 def update_mentee(id, data):
     mentee = Mentee.query.filter(Mentee.id == id).one()
 
-    mentee.mentor_id = data.get('mentor_id'),
-    mentee.first_name = data.get('first_name'),
-    mentee.last_name = data.get('last_name'),
-    mentee.city = data.get('city'),
-    mentee.state = data.get('state'),
-    mentee.financial_aid = data.get('financial_aid'),
-    mentee.cycle_id = data.get('cycle_id')
+    mentee.mentor_id = get_default(data, mentee, 'mentor_id')
+    mentee.first_name = get_default(data, mentee, 'first_name')
+    mentee.last_name = get_default(data, mentee, 'last_name')
+    mentee.city = get_default(data, mentee, 'city')
+    mentee.state = get_default(data, mentee, 'state')
+    mentee.financial_aid = get_default(data, mentee, 'financial_aid')
+    mentee.cycle_id = get_default(data, mentee, 'cycle_id')
 
     Mentee.query.session.add(mentee)
     Mentee.query.session.commit()
@@ -143,9 +143,9 @@ def update_mentee(id, data):
 def update_mentor(id, data):
     mentor = Mentor.query.filter(Mentor.id == id).one()
 
-    mentor.first_name = data.get('first_name'),
-    mentor.last_name = data.get('last_name'),
-    mentor.cycle_id = data.get('cycle_id')
+    mentor.first_name = get_default(data, mentor, 'first_name')
+    mentor.last_name = get_default(data, mentor, 'last_name')
+    mentor.cycle_id = get_default(data, mentor, 'cycle_id')
 
     Mentor.query.session.add(mentor)
     Mentor.query.session.commit()
@@ -153,7 +153,7 @@ def update_mentor(id, data):
 def update_upload(id, data):
     upload = Uploads.query.filter(Uploads.id == id).one()
 
-    upload.link = data.get('link')
+    upload.link = get_default(data, upload, 'link')
 
     Uploads.query.session.add(upload)
     Uploads.query.session.commit()
