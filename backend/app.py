@@ -43,7 +43,7 @@ def init_app(app):
     with app.app_context():
         db.init_app(app)
 
-    @app.route('/')
+    @app.route('/test')
     def index():
         return 'Hello from index!'
 
