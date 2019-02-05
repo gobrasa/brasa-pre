@@ -2,19 +2,11 @@ import logging.config
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, Blueprint
+from flask import Flask
 
 import settings
-from restful_api.endpoints import api, blueprint
-from restful_api.endpoints.exam_schedules import ns as exam_schedules_namespace
-from restful_api.endpoints.exams import ns as exams_namespace
-from restful_api.endpoints.mentees import ns as mentee_namespace
-from restful_api.endpoints.mentors import ns as mentor_namespace
-from restful_api.endpoints.uploads import ns as uploads_namespace
-from restful_api.endpoints.users import ns as blog_categories_namespace
-#from api.restplus import api
-
 from database import db
+from restful_api.endpoints import api
 
 app = Flask(__name__)
 logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
@@ -37,31 +29,19 @@ def configure_app(flask_app):
     flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
 
 
-def register_namespaces(api_object):
-
-    api_object.add_namespace(blog_categories_namespace)
-    api_object.add_namespace(mentee_namespace)
-    api_object.add_namespace(mentor_namespace)
-    api_object.add_namespace(uploads_namespace)
-    api_object.add_namespace(exams_namespace)
-    api_object.add_namespace(exam_schedules_namespace)
-
-
 def create_app():
     load_dotenv()
-    blueprint = Blueprint('api', __name__, url_prefix='/api')
     app = Flask(__name__)
+    api.init_app(app)
+
     return init_app(app)
 
 
 def init_app(app):
     configure_app(app)
 
-
-
     with app.app_context():
         db.init_app(app)
-        app.register_blueprint(blueprint)
 
     @app.route('/')
     def index():
