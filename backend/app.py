@@ -1,6 +1,9 @@
 import logging.config
 
 import os
+from logging import INFO
+
+from dotenv import load_dotenv
 from flask import Flask, Blueprint
 
 import settings
@@ -21,12 +24,14 @@ log = logging.getLogger(__name__)
 
 
 def configure_app(flask_app):
-    flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
+
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    DATABASE_URL = os.getenv('DATABASE_URL')
     flask_app.config['CORS_HEADERS'] = 'Content-Type'
+
+    DATABASE_URL = os.getenv('DATABASE_URL')
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL if not None else settings.SQLALCHEMY_DATABASE_URI
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
+
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = settings.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
     flask_app.config['RESTPLUS_VALIDATE'] = settings.RESTPLUS_VALIDATE
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = settings.RESTPLUS_MASK_SWAGGER
@@ -58,16 +63,35 @@ def register_namespaces(api):
     api.add_namespace(exam_schedules_namespace)
 
 
-def main():
-    initialize_app(app)
 
-    #init_login_routes(app)
-    print("oi")
+def create_app():
+    load_dotenv()
+    app = Flask(__name__)
+
+    # ToDo - move SQLALCHEMY_TRACK_MODIFICATIONS to .env file
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    configure_app(app)
+
+    blueprint = Blueprint('api', __name__, url_prefix='/api')
+
+    with app.app_context():
+        db.init_app(app)
+        api.init_app(blueprint)
+        register_namespaces(api)
+        app.register_blueprint(blueprint)
 
 
-    log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
+    @app.route('/')
+    def index():
+        return 'Hello from index!'
+
+    return app
+
+
+
+app = create_app()
+
+if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)
-
-
-if __name__ == "__main__":
-    main()
