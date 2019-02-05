@@ -1,13 +1,11 @@
 import logging
 
 from flask import request
-from flask_restful import fields
-from flask_restplus import Resource, Namespace
+from flask_restplus import Resource, Namespace, fields
 
 from database.models import User
 from restful_api.Exceptions import RoleNotAllowedException
 from restful_api.business import create_user, delete_user, update_user
-from restful_api.serializers import user, user_with_password
 
 log = logging.getLogger(__name__)
 

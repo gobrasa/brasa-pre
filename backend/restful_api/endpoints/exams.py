@@ -1,8 +1,7 @@
 import logging
 
 from flask import request
-from flask_restful import fields
-from flask_restplus import Resource, Namespace
+from flask_restplus import Resource, Namespace, fields
 
 from database.models import Exams
 from restful_api.business import delete_from_table, create_exam, update_exam
