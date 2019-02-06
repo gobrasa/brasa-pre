@@ -18,7 +18,7 @@ user_and_pw = ns.model('User2', {
 })
 
 user = ns.model('User', {
-    'id':fields.Integer(readOnly=True, description='id'),
+    'id':fields.Integer,
     'username':fields.String(readOnly=True, description='username'),
     'email': fields.String(readOnly=True, description='email'),
     'role_name': fields.String(readOnly=True, description='role_name'),
@@ -26,7 +26,7 @@ user = ns.model('User', {
 })
 
 user_with_password = ns.model('User', {
-    'id':fields.Integer(readOnly=True, description='id'),
+    'id':fields.Integer,
     'username':fields.String(readOnly=True, description='username'),
     'email': fields.String(readOnly=True, description='email'),
     'role_name': fields.String(readOnly=True, description='role_name'),

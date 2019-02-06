@@ -14,7 +14,7 @@ ns = Namespace('mentees', description='Operations related to mentees')
 
 
 university_application = ns.model('University_Application', {
-    'id': fields.Integer('id'),
+    'id': fields.Integer,
     'mentee_id':fields.Integer('mentee_id'),
     'university_id':fields.Integer('university_id'),
     'university': fields.Nested(university)

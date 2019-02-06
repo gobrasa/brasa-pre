@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 ns = Namespace('universities', description='Operations related to uploads')
 
 university = ns.model('University', {
-    'id': fields.Integer('id'),
+    'id': fields.Integer,
     'name': fields.String('name'),
     'city': fields.String('name'),
     'state': fields.String('name'),
