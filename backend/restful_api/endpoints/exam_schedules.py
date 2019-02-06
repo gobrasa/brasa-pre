@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 ns = Namespace('exam_schedules', description='Operations related to exam_schedules')
 
 exam_schedule = ns.model('Exam_Schedules', {
-    'id': fields.Integer(required=False, description='id'),
+    'id': fields.Integer,
     'realization_date': fields.DateTime(required=True, description='realization date'),
     'mentee_id': fields.Integer(required=True, description='mentee_id'),
     'exam_id':fields.Integer(required=True, description='exam_id'),

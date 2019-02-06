@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 ns = Namespace('uploads', description='Operations related to uploads')
 
 upload = ns.model('Uploads', {
-    'id': fields.Integer('id'),
+    'id': fields.Integer,
     'link': fields.String(readOnly=True, description='link to a file in Google Drive'),
     'username': fields.String(readOnly=True, description='username')
 })

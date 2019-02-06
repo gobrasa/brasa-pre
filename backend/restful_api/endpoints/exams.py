@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 ns = Namespace('exams', description='Operations related to exams')
 
 exam = ns.model('Exams', {
-    'id': fields.Integer('id'),
+    'id': fields.Integer,
     'category': fields.String(readOnly=True, description='category'),
     'subcategory': fields.String(readOnly=True, description='subcategory')
 })

@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 ns = Namespace('mentors', description='Operations related to mentors')
 
 cycle = ns.model('Cycle', {
-    'id': fields.Integer('id'),
+    'id': fields.Integer,
     'summary': fields.String('summary'),
     'cycle_start': fields.DateTime('cycle_start'),
     'cycle_end': fields.DateTime('cycle_end'),
@@ -19,7 +19,7 @@ cycle = ns.model('Cycle', {
 })
 
 mentor = ns.model('Mentor', {
-    'id': fields.Integer('id'),
+    'id': fields.Integer,
     'username':fields.String(readOnly=True, description='username'),
     'first_name': fields.String(readOnly=True, description='first_name'),
     'last_name': fields.String(readOnly=True, description='last_name'),
