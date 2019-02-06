@@ -7,6 +7,7 @@ from .mentees import ns as ns_mentees
 from .mentors import ns as ns_mentors
 from .uploads import ns as ns_uploads
 from .users import ns as ns_users
+from .universities import ns as ns_universities
 
 blueprint = Blueprint('api', __name__, url_prefix='/api')
 
@@ -23,3 +24,4 @@ api.add_namespace(ns_mentees)
 api.add_namespace(ns_mentors)
 api.add_namespace(ns_uploads)
 api.add_namespace(ns_users)
+api.add_namespace(ns_universities)

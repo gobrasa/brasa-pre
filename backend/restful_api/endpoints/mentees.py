@@ -6,10 +6,20 @@ from flask_restplus import Resource, Namespace, fields
 from database.models import Mentee
 from restful_api.business import create_mentee, delete_from_table, \
     update_mentee
+from restful_api.endpoints.universities import university
 
 log = logging.getLogger(__name__)
 
 ns = Namespace('mentees', description='Operations related to mentees')
+
+
+university_application = ns.model('University_Application', {
+    'id': fields.Integer('id'),
+    'mentee_id':fields.Integer('mentee_id'),
+    'university_id':fields.Integer('university_id'),
+    'university': fields.Nested(university)
+})
+
 
 mentee = ns.model('Mentee', {
     'id': fields.Integer('id'),
@@ -20,7 +30,9 @@ mentee = ns.model('Mentee', {
     'city': fields.String(readOnly=True, description='city'),
     'state': fields.String(readOnly=True, description='state'),
     'financial_aid': fields.Boolean(description='financial_aid'),
-    'cycle_id': fields.Integer(description='cycle_id')
+    'cycle_id': fields.Integer(description='cycle_id'),
+    'university_applications':fields.List(fields.Nested(university_application))
+
 })
 
 # ToDo - check if it is a good idea to add basic_role_auth and load users from env variables
