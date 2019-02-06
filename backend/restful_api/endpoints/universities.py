@@ -13,8 +13,8 @@ ns = Namespace('universities', description='Operations related to uploads')
 university = ns.model('University', {
     'id': fields.Integer('id'),
     'name': fields.String('name'),
-'city': fields.String('name'),
-'state': fields.String('name'),
+    'city': fields.String('name'),
+    'state': fields.String('name'),
     'country_iso_code': fields.String('country_iso_code')
 })
 

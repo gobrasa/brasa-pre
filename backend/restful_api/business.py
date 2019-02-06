@@ -1,5 +1,5 @@
 from database import db
-from database.models import User, Role, Mentee, Mentor, Uploads, Exams, ExamSchedule, University
+from database.models import User, Role, Mentee, Mentor, Uploads, Exams, ExamSchedule, University, UniversityApplication
 from restful_api.Exceptions import RoleNotAllowedException
 
 
@@ -70,6 +70,18 @@ def create_university(data):
     db.session.commit()
 
 
+def create_university_application(data):
+
+    mentee_id = data.get('mentee_id')
+    university_id = data.get('university_id')
+
+    university_application = UniversityApplication(mentee_id=mentee_id,
+                            university_id=university_id)
+
+    db.session.add(university_application)
+    db.session.commit()
+
+
 def create_mentee(data):
 
     mentor_id = data.get('mentor_id')
@@ -123,6 +135,15 @@ def update_exam(id, data):
 
     Exams.query.session.add(exam)
     Exams.query.session.commit()
+
+def update_university_application(id, data):
+    university_application = UniversityApplication.query.filter(UniversityApplication.id == id).one()
+
+    university_application.mentee_id = get_default(data, university_application, 'mentee_id')
+    university_application.university_id = get_default(data, university_application, 'university_id')
+
+    UniversityApplication.query.session.add(university_application)
+    UniversityApplication.query.session.commit()
 
 
 def create_exam_schedule(data):
