@@ -4,7 +4,7 @@ from flask import request
 from flask_restplus import Resource, Namespace, fields
 
 from database.models import Mentee, Mentor
-from restful_api.business import delete_from_table
+from restful_api.business import delete_from_table, update_mentor, create_mentor
 
 log = logging.getLogger(__name__)
 

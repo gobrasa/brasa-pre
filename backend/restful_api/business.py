@@ -81,6 +81,19 @@ def create_university_application(data):
     db.session.add(university_application)
     db.session.commit()
 
+def create_mentor(data):
+
+    username = data.get('username')
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    cycle_id = data.get('cycle_id')
+
+    mentor = Mentor(username=username, first_name=first_name,
+                    last_name=last_name, cycle_id=cycle_id)
+
+    db.session.add(mentor)
+    db.session.commit()
+
 
 def create_mentee(data):
 
