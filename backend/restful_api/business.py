@@ -94,6 +94,29 @@ def create_mentor(data):
     db.session.add(mentor)
     db.session.commit()
 
+# ToDo - improve query, probably update mentee
+def create_university_application_for_mentee(mentee_id, university_ids):
+    # get mentee
+    mentee = Mentee.query.filter(Mentee.id == mentee_id).one()
+
+    # delete all mappings, push
+    for univ_app in mentee.university_applications:
+
+        db.session.delete(univ_app)
+        db.session.commit()
+
+    # add university applications
+
+    mentee = Mentee.query.filter(Mentee.id == mentee_id).one()
+    for univ_id in university_ids:
+        mentee.university_applications.append(
+            UniversityApplication(
+                mentee_id=mentee_id,
+                university_id=univ_id))
+
+    # post
+    Mentee.query.session.add(mentee)
+    Mentee.query.session.commit()
 
 def create_mentee(data):
 

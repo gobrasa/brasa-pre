@@ -4,7 +4,8 @@ from flask import request
 from flask_restplus import Resource, Namespace, fields
 
 from database.models import UniversityApplication
-from restful_api.business import delete_from_table, create_university_application, update_university_application
+from restful_api.business import delete_from_table, create_university_application, update_university_application, \
+    create_university_application_for_mentee
 
 log = logging.getLogger(__name__)
 
@@ -16,6 +17,9 @@ university_application = ns.model('UniversityApplication_application', {
     'university_id': fields.String('name')
 })
 
+university_list_def = ns.model('UniversityListFromMentee', {
+    'universities': fields.List(fields.String, description='list of universities',required=True)
+})
 
 @ns.route('/')
 class UniversityApplicationCollection(Resource):
@@ -66,3 +70,19 @@ class UniversityApplicationItem(Resource):
         """
         delete_from_table(UniversityApplication, id)
         return None, 204
+
+@ns.route('/university_applications_mentee/<int:mentee_id>')
+@ns.response(404, 'ID not found.')
+class UniversityApplicationListForMentee(Resource):
+
+    @ns.response(201, 'UniversityApplication successfully created.')
+    @ns.expect(university_list_def)
+    def post(self, mentee_id):
+        """
+        Creates a new upload.
+        """
+        data = request.json
+        university_ids = data['universities']
+        print(university_ids)
+        create_university_application_for_mentee(mentee_id, university_ids)
+        return None, 201
