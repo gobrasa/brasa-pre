@@ -25,7 +25,8 @@ export class MenteeListingPage {
   
    private getMentees() {
     this.menteeService.getAllmenteeDecks().subscribe(menteeDecks => {
-        this.menteeDecks = menteeDecks.objects;
+        this.menteeDecks = menteeDecks;
+        
       
     });
   }

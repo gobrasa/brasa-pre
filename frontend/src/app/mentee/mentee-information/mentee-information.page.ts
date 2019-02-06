@@ -26,7 +26,7 @@ export class MenteeInformationPage {
 
    private getMentees() {
     this.menteeService.getAllmenteeDecks().subscribe(menteeDecks => {
-         this.menteeDeck = menteeDecks.objects;
+         this.menteeDeck = menteeDecks;
          this.menteeId = this.route.snapshot.paramMap.get('id');
         // this.FirstName = this.menteeDeck.first_name;
         // this.LastName = this.route.snapshot.paramMap.get('last_name');
