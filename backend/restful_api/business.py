@@ -1,5 +1,5 @@
 from database import db
-from database.models import User, Role, Mentee, Mentor, Uploads, Exams, ExamSchedule
+from database.models import User, Role, Mentee, Mentor, Uploads, Exams, ExamSchedule, University
 from restful_api.Exceptions import RoleNotAllowedException
 
 
@@ -36,10 +36,39 @@ def update_user(user_id, data):
     User.query.session.add(user)
     User.query.session.commit()
 
+def update_university(id, data):
+
+    university = University.query.filter(University.id == id).one()
+
+    university.name = get_default(data, university, 'name')
+    university.city = get_default(data, university, 'city')
+
+    university.state = get_default(data, university, 'state')
+    university.country_iso_code = get_default(data, university, 'country_iso_code')
+
+    University.query.session.add(university)
+    University.query.session.commit()
+
 
 def delete_user(user_id):
     db.session.query(User).filter(User.id == user_id).delete()
     db.session.commit()
+
+def create_university(data):
+
+    name = data.get('username')
+    city = data.get('city')
+    state = data.get('state')
+    country_iso_code = data.get('country_iso_code')
+
+    university = University(name=name,
+                            city=city,
+                            state=state,
+                            country_iso_code=country_iso_code)
+
+    db.session.add(university)
+    db.session.commit()
+
 
 def create_mentee(data):
 
