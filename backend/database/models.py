@@ -39,6 +39,9 @@ class Mentee(db.Model):
     # Exam schedule
     exam_schedules = db.relationship("ExamSchedule")
 
+    university_applications = db.relationship("UniversityApplication",
+                                              back_populates="mentee", uselist=True)
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -66,6 +69,7 @@ class Mentor(db.Model):
     mentees = db.relationship(Mentee.__name__)
 
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
+    cycle = db.relationship("Cycles", back_populates="mentors")
 
 class Meetings(db.Model):
     __tablename__ = 'meetings'
@@ -90,7 +94,8 @@ class Cycles(db.Model):
     region = db.Column(db.String(60)) #europe, americas
 
     mentees = db.relationship(Mentee.__name__)
-    mentors = db.relationship(Mentor.__name__)
+    mentors = db.relationship(Mentor.__name__, back_populates='cycle')
+
 
 class Role(db.Model):
     __tablename__ = "role"
@@ -175,7 +180,7 @@ class UniversityApplication(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
-    mentee = db.relationship(Mentee.__name__, backref="university_applications")
+    mentee = db.relationship(Mentee.__name__, back_populates="university_applications")
 
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_applications")
