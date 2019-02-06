@@ -69,7 +69,7 @@ class MentorItem(Resource):
         """
         Returns a mentor by ID.
         """
-        return Mentee.query.filter(Mentor.id == id).one()
+        return Mentor.query.filter(Mentor.id == id).one()
 
     @ns.expect(mentor)
     @ns.response(204, 'Mentee successfully updated.')
