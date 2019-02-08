@@ -8,7 +8,7 @@ import { Mentee } from './mentee.model';
 export class MenteeService {
 
 
-  private readonly HS_API_URL = 'http://brasa-pre.herokuapp.com';
+  private readonly HS_API_URL = 'https://brasa-pre.herokuapp.com';
   private readonly API_KEY = 'WZmY7utpbDmshO1LYNtsweImq68Rp1h8e1Zjsnz63RbxE029tN';
   private headers: HttpHeaders;
 

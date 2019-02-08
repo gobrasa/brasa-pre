@@ -12,6 +12,8 @@ import { MenteeTestPage } from '../mentee/mentee-test/mentee-test.page'
 import { MenteeEssayPage } from '../mentee/mentee-essay/mentee-essay.page'
 import { MenteeInformationPage } from '../mentee/mentee-information/mentee-information.page';
 import {MenteeCollegePage} from '../mentee/mentee-college/mentee-college.page';
+import { MentorInformationPage } from '../mentor/mentor-information/mentor-information.page';
+
 //import { ContactPage } from '../contact/contact.page';
 //import { CardDeckPage } from '../card/card-deck/card-deck.page';
 
@@ -38,7 +40,7 @@ const routes: Routes = [
       },
       {
         path: 'mentor/listing/:id',
-        component: MenteeInformationPage
+        component: MentorInformationPage
       },
       {
         path: 'informacoes',

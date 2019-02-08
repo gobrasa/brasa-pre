@@ -10,9 +10,6 @@ import { MentorDetailPage } from './mentor-detail/mentor-detail.page';
 import { LoaderService } from '../shared/service/loader.service'
 import { ToastService } from '../shared/service/toast.service';
 import { AlertService } from '../shared/service/alert.service';
-
-
-
 import { IonicModule } from '@ionic/angular';
 import { MentorPage } from './mentor/mentor.page';
 import { MentorInformationPage } from './mentor-information/mentor-information.page';
@@ -46,9 +43,7 @@ import { MentorInformationPage } from './mentor-information/mentor-information.p
     MentorPage, 
     MentorDetailPage, 
     MentorListingPage, 
-    MentorListingPage,
     MentorListComponent,
-    MentorInformationPage,
     MentorInformationPage,
 
   ]
