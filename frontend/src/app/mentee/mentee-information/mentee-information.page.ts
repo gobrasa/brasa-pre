@@ -27,13 +27,8 @@ export class MenteeInformationPage {
    private getMentees() {
     this.menteeService.getAllmenteeDecks().subscribe(menteeDecks => {
          this.menteeDeck = menteeDecks;
+         
          this.menteeId = this.route.snapshot.paramMap.get('id');
-        // this.FirstName = this.menteeDeck.first_name;
-        // this.LastName = this.route.snapshot.paramMap.get('last_name');
-        // this.City = this.route.snapshot.paramMap.get('city');
-        // this.State = this.route.snapshot.paramMap.get('state');
-     
-      
     });
   }
 

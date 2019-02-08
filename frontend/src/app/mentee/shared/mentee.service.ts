@@ -17,7 +17,7 @@ export class MenteeService {
 
 
   public getAllmenteeDecks(): Observable<any>{
-    return this.http.get<any>(`${this.HS_API_URL}/mentees/`);
+    return this.http.get<any>(`${this.HS_API_URL}/mentees`);
   }
 
 

@@ -25,7 +25,7 @@ export class MentorListingPage {
   
    private getMentors() {
     this.mentorService.getAllmentorsDecks().subscribe(mentorDecks => {
-        this.mentorDecks = mentorDecks.objects;
+        this.mentorDecks = mentorDecks;
       
     });
   }

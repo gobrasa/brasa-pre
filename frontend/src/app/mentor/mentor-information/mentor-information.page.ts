@@ -12,7 +12,8 @@ import { ToastService } from '../../shared/service/toast.service';
 
 export class MentorInformationPage {
 
-  mentorDeck: Mentor;
+  private mentorDeck: Mentor;
+  private mentorDeckCycle: Mentor;
   mentorId: any;
 
 
@@ -25,10 +26,10 @@ export class MentorInformationPage {
 
    private getMentors() {
     this.mentorService.getAllmentorsDecks().subscribe(mentorDecks => {
-         this.mentorDeck = mentorDecks.objects;
+         this.mentorDeck = mentorDecks;
          this.mentorId = this.route.snapshot.paramMap.get('id');
      
-      
+          console.log(this.mentorDeck);
     });
   }
 

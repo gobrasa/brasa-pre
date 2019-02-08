@@ -8,7 +8,7 @@ import { Mentor } from './mentor.model';
 export class MentorService {
 
 
-  private readonly HS_API_URL = 'http://brasa-pre.herokuapp.com';
+  private readonly HS_API_URL = 'https://brasa-pre.herokuapp.com';
   private readonly API_KEY = 'WZmY7utpbDmshO1LYNtsweImq68Rp1h8e1Zjsnz63RbxE029tN';
   private headers: HttpHeaders;
 
@@ -17,7 +17,7 @@ export class MentorService {
 
 
   public getAllmentorsDecks(): Observable<any>{
-    return this.http.get<any>(`${this.HS_API_URL}/api/mentors`);
+    return this.http.get<any>(`${this.HS_API_URL}/mentors/`);
   }
 
 
