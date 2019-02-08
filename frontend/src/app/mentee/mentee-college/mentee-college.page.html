@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+       <ion-buttons slot="start"> <ion-back-button defaultHref="/tabs/mentee/listing/1"></ion-back-button> </ion-buttons>
+    </ion-buttons>
+    <ion-title>
+      Mentee
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <ion-img src="/assets/shapes.svg"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle>Bem-vindo!</ion-card-subtitle>
+        <ion-card-title>Pagina inicial - Brasa Pré</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Placeholder</p>
+      </ion-card-content>
+    </ion-card>
+
+    <form>
+      <ion-item>
+      <ion-label>universities</ion-label>
+      <ionic-selectable item-content
+      [(ngModel)]="selectedUnis"
+      itemValueField="id"
+      itemTextField="name"
+      [isMultiple] = "true"
+      [items]="universities"
+      [canSearch]="true"
+      [ngModelOptions]="{standalone: true}"
+      (onChange)="postCollegeList($event)">
+      </ionic-selectable>
+      </ion-item>
+
+
+    </form>
+
+
+    <!--form [formGroup]="todo" (ngSubmit)="logForm()">
+
+
+       <br>
+       <ion-label>College List</ion-label>
+       <br>
+       <ion-item *ngFor="let att of collegeArray; let idx = index">
+            <br>
+            <ion-label>Universidade</ion-label>
+            <ion-input type="text"  text-right  [(ngModel)]="collegeArray[idx].category" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-button  (click)="RemoveCollege(idx)">Remover Universidade</ion-button>
+        </ion-item>
+        <ion-button  (click)="AddCollege()">Adicionar outra Universidade</ion-button>
+
+
+
+      <ion-button type="submit" [disabled]="!todo.valid">Submit</ion-button>
+    </form-->
+</ion-content>

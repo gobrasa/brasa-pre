@@ -18,18 +18,18 @@ export class MenteeListingPage {
   private menteeDecks: Mentee;
 
   constructor(private route: ActivatedRoute,
-              private menteeService: MenteeService) { 
-    
+              private menteeService: MenteeService) {
+
     this.getMentees();
   }
-  
+
    private getMentees() {
     this.menteeService.getAllmenteeDecks().subscribe(menteeDecks => {
-        this.menteeDecks = menteeDecks.objects;
-      
+        this.menteeDecks = menteeDecks;
+
     });
   }
 
-  
-  
+
+
 }

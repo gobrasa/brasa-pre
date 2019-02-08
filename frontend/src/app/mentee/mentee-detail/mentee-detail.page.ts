@@ -12,7 +12,8 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import {Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-mentee-detail',
@@ -20,14 +21,17 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
   styleUrls:  ['./mentee-detail.page.scss']
 })
 export class MenteeDetailPage {
-  private todo : FormGroup;
-  //private readonly API_URL = 'http://brasa-pre.herokuapp.com/api';
-  private readonly API_URL = 'http://bce8300d.ngrok.io';
+  public todo : FormGroup;
+  private readonly API_URL = 'http://brasa-pre.herokuapp.com';
+  //private readonly API_URL = 'http://bce8300d.ngrok.io';
   public satArray:any=[];
   public scoresArray:any=[];
   public satSubjectsArray:any=[];
   private headers: HttpHeaders;
   public menteeProfile:any=[];
+  public menteeId:any;
+  public menteeDados:any=[];
+  /*
  AddSAT(){
    this.satArray.push({'value':''});
  };
@@ -39,30 +43,28 @@ export class MenteeDetailPage {
  };
  AddSubjects(){
    this.satSubjectsArray.push({'subject':'','value':'','date':''});
- }
+ }*/
 
-  constructor( private formBuilder: FormBuilder, private http: HttpClient, private getMentee: HttpClient  ) {
+  constructor( private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private getMentee: HttpClient,
+    private menteeService: MenteeService,
+    private route: ActivatedRoute,
+  private navCtrl: NavController   ) {
     this.headers = new HttpHeaders({'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
     });
-
-    this.todo = this.formBuilder.group({
-      //title: ['', Validators.required],
-      "username": '',
-      //mentor: '',
-      "city": '',
-      "email": '',
-      "state": '',
-      "financial_aid": '',
-      "category":'',
-      "subcategory":'',
-
-      //description: [''],
-    });
-
-
+    this.menteeDados.push({first_name: '',
+    last_name: '',
+    city:'',
+    state:'',
+    financial_aid:''
+    })
+    this.todo = this.formBuilder.group({});
+    this.menteeId = this.route.snapshot.paramMap.get('id');
+    this.getInformation();
     /*this.getMentee.get(`${this.API_URL}/mentees`).subscribe(data => {
       this.todo.value.username = data["objects"][0].username
       console.log(this.todo.value.username)
@@ -75,35 +77,42 @@ export class MenteeDetailPage {
         console.log(error);
       });*/
   }
-  public logForm(){
-    console.log(this.todo.value)
-    console.log(this.http.post(`${this.API_URL}/register_mentee`, this.todo.value, {headers: this.headers}))
-    console.log('ˆˆ')
-    this.http.post(`${this.API_URL}/register_mentee`, {
-      "username":this.todo.value.username,
-      "city": this.todo.value.city,
-      //"email": this.todo.value.email
-      "financial_aid": 1
-    }, {headers: this.headers}).subscribe(data => {
-      console.log(data['_body']);
-      /*
-        console.log(data['_body']);
-        this.http.post(`${this.API_URL}/api/mentees`, {
-          "username":this.todo.value.username,
-          //"city": this.todo.value.city,
-          //"state": this.todo.value.state,
-          "financial_aid": 1
-          //Number(this.todo.value.financial_aid)
-        }, {headers: this.headers}).subscribe(data => {
-            console.log(data['_body']);
-           }, error => {
-            console.log(error);
-           });
 
-           */
-       }, error => {
+  public getInformation(){
+    this.menteeService.getCollegeList(this.menteeId).subscribe(mentee=>{
+      this.menteeDados = {
+        first_name: mentee.first_name,
+        last_name: mentee.last_name,
+        city: mentee.city,
+        state: mentee.state,
+        financial_aid: mentee.financial_aid,
+        universities: mentee.universities
+      };
+    });
+  }
+
+  public logForm(){
+    console.log(this.menteeDados)
+    //console.log(this.http.post(`${this.API_URL}/mentees/` + this.menteeId, this.todo.value, {headers: this.headers}))
+    console.log('ˆˆ')
+    
+    this.http.put(`${this.API_URL}/mentees/` + this.menteeId, {
+      "first_name": this.menteeDados.first_name,
+      "last_name": this.menteeDados.last_name,
+      "city": this.menteeDados.city,
+      "state": this.menteeDados.state,
+      //"email": this.todo.value.email
+      "financial_aid": this.menteeDados.financial_aid,
+      "universities": this.menteeDados.universities
+    }, {headers: this.headers, observe: "response"}).toPromise().then((data) => {
+      if (data.status == 204) {
+        this.navCtrl.goBack("/tabs/mentee/listing/1");
+      }
+      }).catch(err=> { console.log(err) })
+      /*, error => {
         console.log(error);
-       });
+      });*/
+
 
 
     /*for (let i =0; i< this.scoresArray.length; i++){

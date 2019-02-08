@@ -8,14 +8,14 @@
       </ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content padding>
     <ion-list>
       <ion-card *ngFor="let menteeDeck of menteeDeck">
         <div *ngIf="menteeDeck.id == menteeId">
 
             <ion-card-header>
-          
+
                 <ion-card-title>{{ menteeDeck.first_name + " " + menteeDeck.last_name }}</ion-card-title>
                 <ion-card-subtitle class="username">{{"Username: " + " " + menteeDeck.username }}</ion-card-subtitle>
             </ion-card-header>
@@ -34,18 +34,21 @@
 
           <ion-card-content>
             <div id="menteeDeck">
-            
+
               <!-- <h2>{{ menteeDeck.exam_schedules }}</h2>
               <h2>{{ menteeDeck.university_applications }}</h2> -->
 
-              <ion-button [href]="'tabs/mentee/detail'" size='medium' expand='full'>
+              <ion-button [href]="'tabs/mentee/detail/' + menteeDeck.id" size='medium' expand='full'>
                 Atualizar informações
               </ion-button>
-              <ion-button [href]="'tabs/mentee/test'" size='medium' expand='full'>
+              <ion-button [href]="'tabs/mentee/test/' + menteeDeck.id" size='medium' expand='full'>
                 Adicionar prova
               </ion-button>
-              <ion-button [href]="'tabs/mentee/essay'" size='medium' expand='full'>
+              <ion-button [href]="'tabs/mentee/essay/' + menteeDeck.id" size='medium' expand='full'>
                 Adicionar essay
+              </ion-button>
+              <ion-button [href]="'tabs/mentee/college/' + menteeDeck.id" size='medium' expand='full'>
+                College List
               </ion-button>
             </div>
             </ion-card-content>
