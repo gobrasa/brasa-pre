@@ -106,7 +106,10 @@ export class MenteeDetailPage {
       "universities": this.menteeDados.universities
     }, {headers: this.headers, observe: "response"}).toPromise().then((data) => {
       if (data.status == 204) {
-        this.navCtrl.goBack("/tabs/mentee/listing/1");
+        // FixME - line below not compiling
+        //this.navCtrl.goBack("/tabs/mentee/listing/1");
+        console.log('Status 204 received');
+        console.log(data);
       }
       }).catch(err=> { console.log(err) })
       /*, error => {
