@@ -45,13 +45,39 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-card>
+    <ion-card *ngFor="let menteeDeck of menteeDecks">
+      <ion-card-header>
+          
+          <ion-card-title>{{ menteeDeck.first_name + " " + menteeDeck.last_name }}</ion-card-title>
+          <ion-card-subtitle class="username">{{"Username: " + " " + menteeDeck.username }}</ion-card-subtitle>
+      </ion-card-header>
 
       <ion-card-content>
-        <ion-button [href]="'/tabs/mentee'" size='medium' expand='full'>
-          See Detail
-        </ion-button>
+        <div id="menteeDeck">
+            <h1>{{"Mentor ID: " + " " + menteeDeck.mentor_id }}</h1>
+            <h1>{{"Cycle ID: " + " " + menteeDeck.cycle_id }}</h1>
+            <ion-button [href]="'/tabs/mentee/listing/' + menteeDeck.id" size='medium' expand='full'>
+              See Detail
+            </ion-button>
+        </div>
+        <app-card-list></app-card-list>
       </ion-card-content>
     </ion-card>
   </ion-list>
 </ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

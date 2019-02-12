@@ -8,5 +8,4 @@ import { Component, Input } from '@angular/core';
 export class MenteeListComponent {
   @Input() items: any[] = [];
   @Input() listName: string;
-  @Input() navigateTo: any;
 }

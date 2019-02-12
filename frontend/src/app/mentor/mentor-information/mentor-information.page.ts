@@ -6,30 +6,31 @@ import { LoaderService } from '../../shared/service/loader.service';
 import { ToastService } from '../../shared/service/toast.service';
 
 @Component({
-  selector: 'app-mentor-listing',
-  templateUrl: './mentor-listing.page.html',
-  styleUrls: ['./mentor-listing.page.scss']
+  selector: 'app-mentor-information',
+  templateUrl: './mentor-information.page.html'
 })
 
-export class MentorListingPage {
+export class MentorInformationPage {
 
-  private readonly ALLOWED_DESCRIPTIONS = ["objects"];
+  private mentorDeck: Mentor;
+  private mentorDeckCycle: Mentor;
+  mentorId: any;
 
-  private mentorDecks: Mentor;
 
   constructor(private route: ActivatedRoute,
               private mentorService: MentorService) { 
     
     this.getMentors();
   }
-  
+
+
    private getMentors() {
     this.mentorService.getAllmentorsDecks().subscribe(mentorDecks => {
-        this.mentorDecks = mentorDecks;
-      
+         this.mentorDeck = mentorDecks;
+         this.mentorId = this.route.snapshot.paramMap.get('id');
+     
+          console.log(this.mentorDeck);
     });
   }
 
-  
-  
 }
