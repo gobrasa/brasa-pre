@@ -6,3 +6,5 @@ db.sqlite3
 getting-started/*
 
 .idea/
+
+.DS_Store

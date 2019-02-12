@@ -58,6 +58,16 @@ git push heroku master
 
 TBD
 
+### Authenticating with Firebase
+
+```bash
+npm install firebase angularfire2 --save
+```
+
+https://medium.com/appseed-io/integrating-firebase-password-and-google-authentication-into-your-ionic-3-app-2421cee32db9
+https://firebase.google.com/docs/auth/web/password-auth#before_you_begin
+https://ionicthemes.com/tutorials/about/firebase-authentication-in-ionic-framework-apps
+
 ### Definition of done
 
 - Code was written
