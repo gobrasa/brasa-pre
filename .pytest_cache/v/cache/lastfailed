@@ -1,0 +1,4 @@
+{
+  "tests/test_database.py::test_dumb": true,
+  "tests/test_database.py::test_dumb_test": true
+}
