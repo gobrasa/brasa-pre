@@ -3,6 +3,7 @@ import logging
 from flask import request
 from flask_restplus import Resource, Namespace, fields
 
+from auth.auth import requires_auth
 from database.models import Mentee
 from restful_api.business import create_mentee, delete_from_table, \
     update_mentee

@@ -1,7 +1,7 @@
 import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const TOKEN_KEY = 'auth-token';
 
@@ -11,6 +11,7 @@ const TOKEN_KEY = 'auth-token';
 export class AuthenticationService {
 
   authenticationState = new BehaviorSubject(false);
+  private isLoggedIn = false;
 
   constructor(private storage: Storage, private plt: Platform) { 
     // ToDo - Add check for expiration - if logged in for more than 2h, log out first
@@ -31,17 +32,28 @@ export class AuthenticationService {
     return this.storage.set(TOKEN_KEY, 'Bearer 1234567').then(() => {
       console.log(TOKEN_KEY);
       this.authenticationState.next(true);
+      this.isLoggedIn = true;
     });
+    
   }
 
   logout() {
-    return this.storage.remove(TOKEN_KEY).then(() => {
+      return this.storage.remove(TOKEN_KEY).then(() => {
       this.authenticationState.next(false);
-    });
+      this.isLoggedIn=false;
+     });
+    
   }
 
-  isAuthenticated() {
-    return this.authenticationState.value;
+   isAuthenticated() {
+     console.log('checked if it is authenticated');
+     console.log('auth: ',this.authenticationState.value);
+     //return this.authenticationState.value;
+     return this.isLoggedIn;
+   }
+  
+   public getAuthStateObserver(): Observable<boolean> {
+    return this.authenticationState.asObservable();
   }
 
 }

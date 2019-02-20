@@ -3,6 +3,7 @@ import logging
 from flask import request
 from flask_restplus import Resource, Namespace, fields
 
+from auth.auth import requires_auth
 from database.models import Exams
 from restful_api.business import delete_from_table, create_exam, update_exam
 
@@ -20,6 +21,7 @@ exam = ns.model('Exams', {
 class ExamCollection(Resource):
 
     @ns.marshal_list_with(exam)
+    @requires_auth
     def get(self):
         """
         Returns list of exam schedules.

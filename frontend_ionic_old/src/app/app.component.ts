@@ -44,6 +44,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+      /*
       this.authenticationService.authenticationState.subscribe(state => {
         if (state) {
           this.router.navigate(['members', 'dashboard']);
@@ -51,6 +52,7 @@ export class AppComponent {
           this.router.navigate(['login']);
         }
       });
+      */
 
     });
   }

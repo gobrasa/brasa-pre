@@ -2,12 +2,12 @@
 # For more information take a look at:
 # http://flask-sqlalchemy.pocoo.org/2.1/quickstart/#simple-relationships
 
-from datetime import datetime
+import datetime
+
+from marshmallow_sqlalchemy import ModelSchema
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from database import db
-
-import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class ExamSchedule(db.Model):
@@ -193,3 +193,7 @@ class Uploads(db.Model):
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
 
+
+class UniversitySchema(ModelSchema):
+    class Meta:
+        model = University

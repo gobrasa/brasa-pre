@@ -1,9 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
-
+flask_bcrypt = Bcrypt()
 
 def reset_database():
-    from rest_api_demo.database.models import Post, Category  # noqa
     db.drop_all()
     db.create_all()
