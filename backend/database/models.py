@@ -48,7 +48,8 @@ class MenteeSchema(ma.Schema):
         fields = ('id', 'mentor_id', 'username',
                   'first_name','last_name','city',
                   'state', 'financial_aid',
-                  'cycle_id', 'exam_schedules',
+                  'cycle_id',
+                  #'exam_schedules',
             #'university_applications'
 )
 
