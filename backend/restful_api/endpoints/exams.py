@@ -1,11 +1,13 @@
 import logging
 
-from flask import request
-from flask_restplus import Resource, Namespace, fields
+from flask import request, jsonify
+from flask_cors import cross_origin
+from flask_restplus import Resource, Namespace, fields, marshal
 
 from auth.auth import requires_auth
-from database.models import Exams
+from database.models import Exams, ExamsSchema
 from restful_api.business import delete_from_table, create_exam, update_exam
+
 
 log = logging.getLogger(__name__)
 
@@ -17,27 +19,38 @@ exam = ns.model('Exams', {
     'subcategory': fields.String(readOnly=True, description='subcategory')
 })
 
+
 @ns.route('/')
 class ExamCollection(Resource):
 
-    @ns.marshal_list_with(exam)
+
     @requires_auth
+    @cross_origin(supports_credentials=True)
     def get(self):
         """
         Returns list of exam schedules.
         """
+
         exams = Exams.query.all()
-        return exams
+        exams_schema = ExamsSchema(many=True)
+        result = exams_schema.dump(exams)
+        return jsonify(result.data)
+
+
 
     @ns.response(201, 'Exam successfully created.')
     @ns.expect(exam)
+    @requires_auth
+    @cross_origin(supports_credentials=True)
     def post(self):
         """
-        Creates a new exam_schedule.
+        Creates a new exam.
         """
+        print('entered post exam')
         data = request.json
-        create_exam(data)
-        return None, 201
+        exam_id = create_exam(data)
+        print(exam_id)
+        return jsonify(exam_id), 201
 
 @ns.route('/<int:id>')
 @ns.response(404, 'ID not found.')

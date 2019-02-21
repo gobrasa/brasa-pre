@@ -1,9 +1,10 @@
 import logging
 
-from flask import request
+from flask import request, jsonify
+from flask_cors import cross_origin
 from flask_restplus import Resource, Namespace, fields
 
-from database.models import User
+from database.models import User, UserSchema
 from restful_api.Exceptions import RoleNotAllowedException
 from restful_api.business import create_user, delete_user, update_user
 
@@ -61,7 +62,6 @@ class UserCollection(Resource):
                    'Errors: {}'.format(ex, ex.errors), 400
         return None, 201
 
-
 @ns.route('/<int:id>')
 @ns.response(404, 'User not found.')
 class UserItem(Resource):
@@ -102,3 +102,19 @@ class UserItem(Resource):
         """
         delete_user(id)
         return None, 204
+
+@ns.route('/<string:username>')
+@ns.response(404, 'User not found.')
+class UsernameItem(Resource):
+
+    #@ns.marshal_with(user)
+    @cross_origin(supports_credentials=True)
+    def get(self, username):
+        """
+        Queries user by username.
+        """
+        user = User.query.filter(User.username == username).one()
+        user_schema = UserSchema()
+        result = user_schema.dump(user)
+        return jsonify(result.data)
+

@@ -163,6 +163,8 @@ def create_exam(data):
     db.session.add(exam)
     db.session.commit()
 
+    return exam.id
+
 def update_exam(id, data):
     exam = Exams.query.filter(Exams.id == id).one()
 

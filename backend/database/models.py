@@ -4,10 +4,10 @@
 
 import datetime
 
-from marshmallow_sqlalchemy import ModelSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database import db
+from restful_api.marsh import ma
 
 
 class ExamSchedule(db.Model):
@@ -42,21 +42,17 @@ class Mentee(db.Model):
     university_applications = db.relationship("UniversityApplication",
                                               back_populates="mentee", uselist=True)
 
-    @property
-    def serialize(self):
-        """Return object data in easily serializeable format"""
-        return {
-            'id': self.id,
-            'mentor_id': self.mentor_id,
-            'username': self.username,
-            'first_name': self.first_name,
-            'last_name' : self.last_name,
-            'city' : self.city,
-            'state': self.state,
-            'financial_aid': self.financial_aid,
-            'cycle_id' : self.cycle_id,
-            'exam_schedules': self.exam_schedules
-        }
+class MenteeSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'mentor_id', 'username',
+                  'first_name','last_name','city',
+                  'state', 'financial_aid',
+                  'cycle_id', 'exam_schedules',
+            #'university_applications'
+)
+
+
 
 class Mentor(db.Model):
     __tablename__ = 'mentors'
@@ -70,6 +66,7 @@ class Mentor(db.Model):
 
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
     cycle = db.relationship("Cycles", back_populates="mentors")
+
 
 class Meetings(db.Model):
     __tablename__ = 'meetings'
@@ -91,7 +88,7 @@ class Cycles(db.Model):
     summary = db.Column(db.String(50))
     cycle_start = db.Column(db.DateTime)
     cycle_end = db.Column(db.DateTime)
-    region = db.Column(db.String(60)) #europe, americas
+    region = db.Column(db.String(60))  # europe, americas
 
     mentees = db.relationship(Mentee.__name__)
     mentors = db.relationship(Mentor.__name__, back_populates='cycle')
@@ -124,13 +121,6 @@ class User(db.Model):
         """Return the email address to satisfy Flask-Login's requirements."""
         return self.email
 
-    def is_authenticated(self):
-        """Return True if the user is authenticated."""
-        return self.authenticated
-
-    def is_anonymous(self):
-        """False, as anonymous users aren't supported."""
-        return False
 
     def set_password(self, secret):
         self.password_hash = generate_password_hash(secret)
@@ -143,6 +133,12 @@ class User(db.Model):
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
 
+class UserSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'username', 'email','role_name')
+
+
 class University(db.Model):
     __tablename__ = "universities"
 
@@ -152,8 +148,8 @@ class University(db.Model):
     state = db.Column(db.String(120))
     country_iso_code = db.Column(db.String(3))
 
-class Message(db.Model):
 
+class Message(db.Model):
     __tablename__ = "messages"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -165,6 +161,7 @@ class Message(db.Model):
     def __repr__(self):
         return '<Message {}>'.format(self.body)
 
+
 class Exams(db.Model):
     __tablename__ = "exams"
 
@@ -172,6 +169,12 @@ class Exams(db.Model):
 
     category = db.Column(db.String(120))
     subcategory = db.Column(db.String(120))
+
+class ExamsSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'category', 'subcategory')
+    # Smart hyperlinking
 
 
 class UniversityApplication(db.Model):
@@ -193,7 +196,3 @@ class Uploads(db.Model):
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
 
-
-class UniversitySchema(ModelSchema):
-    class Meta:
-        model = University

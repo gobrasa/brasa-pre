@@ -1,10 +1,11 @@
 import logging
 
-from flask import request
+from flask import request, jsonify
+from flask_cors import cross_origin
 from flask_restplus import Resource, Namespace, fields
 
 from auth.auth import requires_auth
-from database.models import Mentee
+from database.models import Mentee, MenteeSchema
 from restful_api.business import create_mentee, delete_from_table, \
     update_mentee
 from restful_api.endpoints.universities import university
@@ -43,15 +44,20 @@ mentee = ns.model('Mentee', {
 @ns.route('/')
 class MenteeCollection(Resource):
 
-    @ns.marshal_list_with(mentee)
+    #@ns.marshal_list_with(mentee)
+    @cross_origin(supports_credentials=True)
     def get(self):
         """
         Returns list of mentees.
         """
-        users = Mentee.query.all()
-        return users
+        mentees = Mentee.query.all()
+        mentees_schema = MenteeSchema(many=True)
+        result = mentees_schema.dump(mentees)
+        return jsonify(result.data)
+
 
     @ns.response(201, 'Category successfully created.')
+    @cross_origin(supports_credentials=True)
     @ns.expect(mentee)
     def post(self):
         """
@@ -66,6 +72,7 @@ class MenteeCollection(Resource):
 class MenteeItemByUsername(Resource):
 
     @ns.marshal_with(mentee)
+    @cross_origin(supports_credentials=True)
     def get(self, username):
         """
         Returns a mentee by username.
