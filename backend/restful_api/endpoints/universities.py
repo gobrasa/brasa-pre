@@ -4,7 +4,7 @@ from flask import request
 from flask_restplus import Resource, Namespace, fields
 
 from database.models import University
-from restful_api.business import delete_from_table, create_upload, update_upload, update_university, create_university
+from restful_api.db_ops.business import delete_from_table, update_university, create_university
 
 log = logging.getLogger(__name__)
 

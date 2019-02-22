@@ -249,3 +249,19 @@ def update_upload(id, data):
 def delete_from_table(class_var, id):
     db.session.query(class_var).filter(class_var.id == id).delete()
     db.session.commit()
+
+def retrieve_single_item_with_filter(entity_cls, entity_schema, filters):
+    """
+
+    :param filters: Example -> (Mentee.username=='my_name',Mentee.id == 1)
+    :return:
+    """
+
+    item = db.session.query(entity_cls).filter_by(**filters).one()
+
+    return return_elements_using_schema(item,entity_schema, many=False)
+
+
+def return_elements_using_schema(obj, schema_cls, many):
+    schema = schema_cls(many=many)
+    return schema.jsonify(obj)

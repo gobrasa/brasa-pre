@@ -4,8 +4,9 @@ from flask import request, jsonify
 from flask_cors import cross_origin
 from flask_restplus import Resource, Namespace, fields
 
-from database.models import Mentee, Mentor, MentorSchema
-from restful_api.business import delete_from_table, update_mentor, create_mentor
+from database.models import Mentor, MentorSchema
+from restful_api.db_ops.business import delete_from_table, update_mentor, create_mentor, \
+    retrieve_single_item_with_filter
 
 log = logging.getLogger(__name__)
 
@@ -64,21 +65,20 @@ class MentorItemByUsername(Resource):
         """
         Returns a mentor by username.
         """
-        mentor = Mentor.query.filter(Mentor.username == username).first_or_404()
-        print(mentor)
-        mentor_schema = MentorSchema()
-        return mentor_schema.jsonify(mentor)
+
+        return retrieve_single_item_with_filter(Mentor, MentorSchema, {'username': username})
 
 @ns.route('/<int:id>')
 @ns.response(404, 'User not found.')
 class MentorItem(Resource):
 
-    @ns.marshal_with(mentor)
+    #@ns.marshal_with(mentor)
+    @cross_origin(supports_credentials=True)
     def get(self, id):
         """
         Returns a mentor by ID.
         """
-        return Mentor.query.filter(Mentor.id == id).first_or_404()
+        return retrieve_single_item_with_filter(Mentor, MentorSchema, {'id': id})
 
     @ns.expect(mentor)
     @ns.response(204, 'Mentee successfully updated.')

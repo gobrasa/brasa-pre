@@ -2,11 +2,11 @@ import logging
 
 from flask import request, jsonify
 from flask_cors import cross_origin
-from flask_restplus import Resource, Namespace, fields, marshal
+from flask_restplus import Resource, Namespace, fields
 
 from auth.auth import requires_auth
 from database.models import Exams, ExamsSchema
-from restful_api.business import delete_from_table, create_exam, update_exam
+from restful_api.db_ops.business import delete_from_table, create_exam, update_exam
 
 
 log = logging.getLogger(__name__)

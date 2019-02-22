@@ -6,7 +6,7 @@ from flask_restplus import Resource, Namespace, fields
 
 from database.models import User, UserSchema
 from restful_api.Exceptions import RoleNotAllowedException
-from restful_api.business import create_user, delete_user, update_user
+from restful_api.db_ops.business import create_user, delete_user, update_user
 
 log = logging.getLogger(__name__)
 

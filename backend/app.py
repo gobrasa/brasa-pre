@@ -1,6 +1,7 @@
 import logging.config
 import os
 
+import sqlalchemy
 from dotenv import load_dotenv
 from flask import Flask, request
 from flask_cors import CORS
@@ -106,6 +107,10 @@ def register_error_handler(restful_api):
     def handle_auth_error(ex):
         return {'message': ex.error}, ex.status_code
 
+    @restful_api.errorhandler(sqlalchemy.orm.exc.NoResultFound)
+    def handle_no_result_found(ex):
+        print('entered handle_no_result')
+        return {'message': str(ex)}, 404
 
 app = create_app()
 

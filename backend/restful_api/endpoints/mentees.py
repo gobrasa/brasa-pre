@@ -1,13 +1,12 @@
 import logging
 
-from flask import request, jsonify
+from flask import request
 from flask_cors import cross_origin
 from flask_restplus import Resource, Namespace, fields
 
-from auth.auth import requires_auth
 from database.models import Mentee, MenteeSchema
-from restful_api.business import create_mentee, delete_from_table, \
-    update_mentee
+from restful_api.db_ops.business import create_mentee, delete_from_table, \
+    update_mentee, retrieve_single_item_with_filter, return_elements_using_schema
 from restful_api.endpoints.universities import university
 
 log = logging.getLogger(__name__)
@@ -47,9 +46,7 @@ class MenteeCollection(Resource):
         Returns list of mentees.
         """
         mentees = Mentee.query.all()
-        mentees_schema = MenteeSchema(many=True)
-        result = mentees_schema.dump(mentees)
-        return jsonify(result.data)
+        return return_elements_using_schema(mentees, MenteeSchema, many=True)
 
 
     @ns.response(201, 'Category successfully created.')
@@ -74,23 +71,20 @@ class MenteeItemByUsername(Resource):
         Returns a mentee by username.
         """
 
-        mentee = Mentee.query.filter(Mentee.username == username).first_or_404()
-        print(mentee)
-        mentee_schema = MenteeSchema()
-        return mentee_schema.jsonify(mentee)
+        return retrieve_single_item_with_filter(Mentee, MenteeSchema, {'username': username})
 
 
 @ns.route('/<int:id>')
 @ns.response(404, 'User not found.')
 class MenteeItem(Resource):
 
-    @ns.marshal_with(mentee)
+    #@ns.marshal_with(mentee)
     @cross_origin(supports_credentials=True)
     def get(self, id):
         """
         Returns a mentee by ID.
         """
-        return Mentee.query.filter(Mentee.id == id).first_or_404()
+        return retrieve_single_item_with_filter(Mentee, MenteeSchema,{'id': id})
 
     @ns.expect(mentee)
     @ns.response(204, 'Mentee successfully updated.')

@@ -4,7 +4,7 @@ from flask import request
 from flask_restplus import Namespace, Resource, fields
 
 from database.models import ExamSchedule
-from restful_api.business import delete_from_table, create_exam_schedule, update_exam_schedule
+from restful_api.db_ops.business import delete_from_table, create_exam_schedule, update_exam_schedule
 
 log = logging.getLogger(__name__)
 
