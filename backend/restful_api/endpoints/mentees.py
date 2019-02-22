@@ -37,10 +37,6 @@ mentee = ns.model('Mentee', {
 
 })
 
-# ToDo - check if it is a good idea to add basic_role_auth and load users from env variables
-#auth = BasicRoleAuth()
-#auth.add_user(user=os.getenv('ADMIN_USERNAME'), password=os.getenv('ADMIN_PW'), roles='admin')
-
 @ns.route('/')
 class MenteeCollection(Resource):
 
@@ -94,7 +90,7 @@ class MenteeItem(Resource):
         """
         Returns a mentee by ID.
         """
-        return Mentee.query.filter(Mentee.id == id).one()
+        return Mentee.query.filter(Mentee.id == id).first_or_404()
 
     @ns.expect(mentee)
     @ns.response(204, 'Mentee successfully updated.')

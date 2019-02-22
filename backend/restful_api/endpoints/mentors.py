@@ -64,7 +64,7 @@ class MentorItemByUsername(Resource):
         """
         Returns a mentor by username.
         """
-        mentor = Mentor.query.filter(Mentor.username == username).one()
+        mentor = Mentor.query.filter(Mentor.username == username).first_or_404()
         print(mentor)
         mentor_schema = MentorSchema()
         return mentor_schema.jsonify(mentor)
@@ -78,7 +78,7 @@ class MentorItem(Resource):
         """
         Returns a mentor by ID.
         """
-        return Mentor.query.filter(Mentor.id == id).one()
+        return Mentor.query.filter(Mentor.id == id).first_or_404()
 
     @ns.expect(mentor)
     @ns.response(204, 'Mentee successfully updated.')
