@@ -90,24 +90,10 @@ class MenteeItem(Resource):
     @ns.response(204, 'Mentee successfully updated.')
     @cross_origin(supports_credentials=True)
     def put(self, id):
-        """
-        Updates a blog category.
 
-        Use this method to change the name of a blog category.
-
-        * Send a JSON object with the new name in the request body.
-
-        ```
-        {
-          "name": "New Category Name"
-        }
-        ```
-
-        * Specify the ID of the category to modify in the request URL path.
-        """
         data = request.json
-        update_mentee(id, data)
-        return None, 204
+        id = update_mentee(id, data)
+        return str(id), 204
 
     @ns.response(204, 'User successfully deleted.')
     @cross_origin(supports_credentials=True)

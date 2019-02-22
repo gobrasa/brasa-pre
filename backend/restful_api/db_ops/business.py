@@ -228,6 +228,8 @@ def update_mentee(id, data):
     Mentee.query.session.add(mentee)
     Mentee.query.session.commit()
 
+    return mentee.id
+
 def update_mentor(id, data):
     mentor = Mentor.query.filter(Mentor.id == id).one()
 
