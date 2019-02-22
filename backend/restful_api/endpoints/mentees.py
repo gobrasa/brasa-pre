@@ -86,7 +86,7 @@ class MenteeItem(Resource):
         """
         return retrieve_single_item_with_filter(Mentee, MenteeSchema,{'id': id})
 
-    @ns.expect(mentee)
+    #@ns.expect(mentee)
     @ns.response(204, 'Mentee successfully updated.')
     @cross_origin(supports_credentials=True)
     def put(self, id):

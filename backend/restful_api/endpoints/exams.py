@@ -24,7 +24,7 @@ exam = ns.model('Exams', {
 class ExamCollection(Resource):
 
 
-    @requires_auth
+    #@requires_auth
     @cross_origin(supports_credentials=True)
     def get(self):
         """

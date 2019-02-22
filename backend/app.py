@@ -25,9 +25,12 @@ def after_request(response):
 
     response.headers.add('Access-Control-Allow-Origin', r)
     #response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200/')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+    #response.headers.add('Access-Control-Allow-Headers', 'Content-Type,authorization')
+    response.headers.add("Access-Control-Allow-Headers",
+                       "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    response.headers.add('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS,PUT,DELETE')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
+
     return response
 
 logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
