@@ -71,19 +71,25 @@ class MenteeCollection(Resource):
 @ns.response(404, 'username not found')
 class MenteeItemByUsername(Resource):
 
-    @ns.marshal_with(mentee)
+    #@ns.marshal_with(mentee)
     @cross_origin(supports_credentials=True)
     def get(self, username):
         """
         Returns a mentee by username.
         """
-        return Mentee.query.filter(Mentee.username == username).one()
+
+        mentee = Mentee.query.filter(Mentee.username == username).first_or_404()
+        print(mentee)
+        mentee_schema = MenteeSchema()
+        return mentee_schema.jsonify(mentee)
+
 
 @ns.route('/<int:id>')
 @ns.response(404, 'User not found.')
 class MenteeItem(Resource):
 
     @ns.marshal_with(mentee)
+    @cross_origin(supports_credentials=True)
     def get(self, id):
         """
         Returns a mentee by ID.
@@ -92,6 +98,7 @@ class MenteeItem(Resource):
 
     @ns.expect(mentee)
     @ns.response(204, 'Mentee successfully updated.')
+    @cross_origin(supports_credentials=True)
     def put(self, id):
         """
         Updates a blog category.
@@ -113,6 +120,7 @@ class MenteeItem(Resource):
         return None, 204
 
     @ns.response(204, 'User successfully deleted.')
+    @cross_origin(supports_credentials=True)
     def delete(self, id):
         """
         Deletes user.

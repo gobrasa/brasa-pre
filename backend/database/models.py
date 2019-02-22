@@ -10,17 +10,44 @@ from database import db
 from restful_api.marsh import ma
 
 
-class ExamSchedule(db.Model):
-    __tablename__ = 'scheduled_exams'
+class University(db.Model):
+    __tablename__ = "universities"
 
-    # 1 mentee, many exam schedules
     id = db.Column(db.Integer, primary_key=True)
-    realization_date = db.Column(db.DateTime, nullable=False)
-    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+    name = db.Column(db.String(120), index=True, unique=True)
+    city = db.Column(db.String(120))
+    state = db.Column(db.String(120))
+    country_iso_code = db.Column(db.String(3))
 
-    exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'))
-    exam = db.relationship("Exams")
-    score = db.Column(db.String(20))  # Not sure whether score is A or 100
+
+class UniversitySchema(ma.ModelSchema):
+    class Meta:
+        model = University
+
+        fields = ('id', 'name', 'city',
+                  'state', 'country_iso_code'
+                  )
+
+
+class Exams(db.Model):
+    __tablename__ = "exams"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    category = db.Column(db.String(120))
+    subcategory = db.Column(db.String(120))
+
+
+class UniversityApplication(db.Model):
+    __tablename__ = "university_applications"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+    mentee = db.relationship("Mentee", back_populates="university_applications")
+
+    university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
+    university = db.relationship(University.__name__, backref="university_applications")
 
 
 class Mentee(db.Model):
@@ -42,18 +69,44 @@ class Mentee(db.Model):
     university_applications = db.relationship("UniversityApplication",
                                               back_populates="mentee", uselist=True)
 
+
+class ExamSchedule(db.Model):
+    __tablename__ = 'scheduled_exams'
+
+    # 1 mentee, many exam schedules
+    id = db.Column(db.Integer, primary_key=True)
+    realization_date = db.Column(db.DateTime, nullable=False)
+    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+
+    exam_id = db.Column(db.Integer, db.ForeignKey('exams.id'))
+    exam = db.relationship("Exams")
+    score = db.Column(db.String(20))  # Not sure whether score is A or 100
+
+
+class ExamScheduleSchema(ma.ModelSchema):
+    class Meta:
+        model = ExamSchedule
+
+class UniversityApplicationSchema(ma.ModelSchema):
+    class Meta:
+        model = UniversityApplication
+        fields = ('id','mentee_id','university_id')
+
+
 class MenteeSchema(ma.Schema):
+    university_applications = ma.Nested(UniversityApplicationSchema, many=True)
+    exam_schedules = ma.Nested(ExamScheduleSchema, many=True)
+
     class Meta:
         # Fields to expose
+        model = Mentee
         fields = ('id', 'mentor_id', 'username',
-                  'first_name','last_name','city',
+                  'first_name', 'last_name', 'city',
                   'state', 'financial_aid',
                   'cycle_id',
-                  #'exam_schedules',
-            #'university_applications'
-)
-
-
+                  'exam_schedules',
+                  'university_applications'
+                  )
 
 class Mentor(db.Model):
     __tablename__ = 'mentors'
@@ -81,7 +134,6 @@ class Meetings(db.Model):
     mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
     mentee = db.relationship(Mentee.__name__, backref="meetings")
 
-
 class Cycles(db.Model):
     __tablename__ = "cycles"
 
@@ -93,6 +145,22 @@ class Cycles(db.Model):
 
     mentees = db.relationship(Mentee.__name__)
     mentors = db.relationship(Mentor.__name__, back_populates='cycle')
+
+class CyclesSchema(ma.ModelSchema):
+    class Meta:
+        # Fields to expose
+        model = Cycles
+
+class MentorSchema(ma.Schema):
+    cycle = ma.Nested(CyclesSchema, many=False)
+    mentees = ma.Nested(MenteeSchema, many=True)
+
+    class Meta:
+        # Fields to expose
+        model = Mentor
+        fields = ('id', 'username', 'first_name',
+                  'last_name','cycle','mentees'
+                  )
 
 
 class Role(db.Model):
@@ -122,7 +190,6 @@ class User(db.Model):
         """Return the email address to satisfy Flask-Login's requirements."""
         return self.email
 
-
     def set_password(self, secret):
         self.password_hash = generate_password_hash(secret)
 
@@ -134,20 +201,11 @@ class User(db.Model):
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
 
+
 class UserSchema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ('id', 'username', 'email','role_name')
-
-
-class University(db.Model):
-    __tablename__ = "universities"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), index=True, unique=True)
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
-    country_iso_code = db.Column(db.String(3))
+        fields = ('id', 'username', 'email', 'role_name')
 
 
 class Message(db.Model):
@@ -163,33 +221,6 @@ class Message(db.Model):
         return '<Message {}>'.format(self.body)
 
 
-class Exams(db.Model):
-    __tablename__ = "exams"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    category = db.Column(db.String(120))
-    subcategory = db.Column(db.String(120))
-
-class ExamsSchema(ma.Schema):
-    class Meta:
-        # Fields to expose
-        fields = ('id', 'category', 'subcategory')
-    # Smart hyperlinking
-
-
-class UniversityApplication(db.Model):
-    __tablename__ = "university_applications"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
-    mentee = db.relationship(Mentee.__name__, back_populates="university_applications")
-
-    university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
-    university = db.relationship(University.__name__, backref="university_applications")
-
-
 class Uploads(db.Model):
     __tablename__ = "uploads"
 
@@ -197,3 +228,9 @@ class Uploads(db.Model):
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
 
+
+class ExamsSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'category', 'subcategory')
+    # Smart hyperlinking
