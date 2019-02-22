@@ -177,36 +177,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String)
     role_name = db.Column(db.String(30), db.ForeignKey('role.role_name'))
     uploads = db.relationship("Uploads")
-    authenticated = db.Column(db.Boolean, default=False)
-
-    def is_active(self):
-        """True, as all users are active."""
-        return True
-
-    def get_id(self):
-        """Return the email address to satisfy Flask-Login's requirements."""
-        return self.email
-
-    def set_password(self, secret):
-        self.password_hash = generate_password_hash(secret)
-
-    def check_password(self, secret):
-        return check_password_hash(self.password_hash, secret)
-
-    def new_messages(self):
-        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
-        return Message.query.filter_by(recipient=self).filter(
-            Message.timestamp > last_read_time).count()
-
 
 class UserSchema(ma.Schema):
     class Meta:
         # Fields to expose
         fields = ('id', 'username', 'email', 'role_name')
-
 
 class Message(db.Model):
     __tablename__ = "messages"
