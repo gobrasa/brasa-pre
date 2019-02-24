@@ -12,10 +12,19 @@ from .university_applications import ns as ns_university_applications
 
 blueprint = Blueprint('api', __name__, url_prefix='/api')
 
+authorizations = {
+    'apikey': {
+        'type':'apiKey',
+        'in':'header',
+        'name': 'Authorization'
+    }
+}
+
 api = Api(
     title='My Title',
     version='1.0',
     description='A description',
+    authorizations=authorizations
     # All API metadatas
 )
 

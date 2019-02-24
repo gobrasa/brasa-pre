@@ -8,7 +8,6 @@ from auth.auth import requires_auth
 from database.models import Exams, ExamsSchema
 from restful_api.db_ops.business import delete_from_table, create_exam, update_exam
 
-
 log = logging.getLogger(__name__)
 
 ns = Namespace('exams', description='Operations related to exams')
@@ -23,14 +22,14 @@ exam = ns.model('Exams', {
 @ns.route('/')
 class ExamCollection(Resource):
 
-
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     #@requires_auth
-    @cross_origin(supports_credentials=True)
+    #@ns.doc(security='apikey')
     def get(self):
         """
         Returns list of exam schedules.
         """
-
+        print('entered get exams')
         exams = Exams.query.all()
         exams_schema = ExamsSchema(many=True)
         result = exams_schema.dump(exams)
@@ -38,10 +37,11 @@ class ExamCollection(Resource):
 
 
 
-    @ns.response(201, 'Exam successfully created.')
-    @ns.expect(exam)
-    @requires_auth
-    @cross_origin(supports_credentials=True)
+    #@ns.response(201, 'Exam successfully created.')
+    #@ns.expect(exam)
+    #@requires_auth
+    #@cross_origin(headers=['Content-Type', 'Authorization'])
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def post(self):
         """
         Creates a new exam.

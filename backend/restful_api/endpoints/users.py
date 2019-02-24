@@ -6,7 +6,8 @@ from flask_restplus import Resource, Namespace, fields
 
 from database.models import User, UserSchema
 from restful_api.Exceptions import RoleNotAllowedException
-from restful_api.db_ops.business import create_user, delete_user, update_user
+from restful_api.db_ops.business import create_user, delete_user, update_user, retrieve_single_item_with_filter, \
+    return_elements_using_schema
 
 log = logging.getLogger(__name__)
 
@@ -39,16 +40,18 @@ user_with_password = ns.model('User', {
 @ns.route('/')
 class UserCollection(Resource):
 
-    @ns.marshal_list_with(user)
+    #@ns.marshal_list_with(user)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self):
         """
         Returns list of blog categories.
         """
         users = User.query.all()
-        return users
+        return return_elements_using_schema(users, UserSchema, many=True)
 
     @ns.response(201, 'Category successfully created.')
     @ns.expect(user_with_password)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def post(self):
         """
         Creates a new blog category.
@@ -60,21 +63,23 @@ class UserCollection(Resource):
             return 'Role not recognized. ' \
                    'Exception: {},' \
                    'Errors: {}'.format(ex, ex.errors), 400
-        return None, 201
+        return '', 201
 
 @ns.route('/<int:id>')
 @ns.response(404, 'User not found.')
 class UserItem(Resource):
 
-    @ns.marshal_with(user)
+    #@ns.marshal_with(user)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self, id):
         """
         Returns a category with a list of posts.
         """
-        return User.query.filter(User.id == id).one()
+        return retrieve_single_item_with_filter(User, UserSchema, {'id': id})
 
     @ns.expect(user)
     @ns.response(204, 'User successfully updated.')
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def put(self, id):
         """
         Updates a blog category.
@@ -93,28 +98,27 @@ class UserItem(Resource):
         """
         data = request.json
         update_user(id, data)
-        return None, 204
+        return '', 204
 
     @ns.response(204, 'User successfully deleted.')
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def delete(self, id):
         """
         Deletes user.
         """
         delete_user(id)
-        return None, 204
+        return '', 204
 
 @ns.route('/<string:username>')
 @ns.response(404, 'User not found.')
 class UsernameItem(Resource):
 
     #@ns.marshal_with(user)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self, username):
         """
         Queries user by username.
         """
-        user = User.query.filter(User.username == username).one()
-        user_schema = UserSchema()
-        result = user_schema.dump(user)
-        return jsonify(result.data)
+
+        return retrieve_single_item_with_filter(User, UserSchema, {'username': username})
 

@@ -40,7 +40,9 @@ mentee = ns.model('Mentee', {
 class MenteeCollection(Resource):
 
     #@ns.marshal_list_with(mentee)
-    @cross_origin(supports_credentials=True)
+    #@cross_origin(supports_credentials=True)
+    # ToDo - change back to line above if CORS does not work
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self):
         """
         Returns list of mentees.
@@ -50,22 +52,22 @@ class MenteeCollection(Resource):
 
 
     @ns.response(201, 'Category successfully created.')
-    @cross_origin(supports_credentials=True)
     @ns.expect(mentee)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def post(self):
         """
         Creates a new mentee.
         """
         data = request.json
         create_mentee(data)
-        return None, 201
+        return '', 201
 
 @ns.route('/<string:username>')
 @ns.response(404, 'username not found')
 class MenteeItemByUsername(Resource):
 
     #@ns.marshal_with(mentee)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self, username):
         """
         Returns a mentee by username.
@@ -79,7 +81,7 @@ class MenteeItemByUsername(Resource):
 class MenteeItem(Resource):
 
     #@ns.marshal_with(mentee)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self, id):
         """
         Returns a mentee by ID.
@@ -88,7 +90,7 @@ class MenteeItem(Resource):
 
     #@ns.expect(mentee)
     @ns.response(204, 'Mentee successfully updated.')
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def put(self, id):
 
         data = request.json
@@ -96,7 +98,7 @@ class MenteeItem(Resource):
         return str(id), 204
 
     @ns.response(204, 'User successfully deleted.')
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def delete(self, id):
         """
         Deletes user.

@@ -6,7 +6,7 @@ from flask_restplus import Resource, Namespace, fields
 
 from database.models import Mentor, MentorSchema
 from restful_api.db_ops.business import delete_from_table, update_mentor, create_mentor, \
-    retrieve_single_item_with_filter
+    retrieve_single_item_with_filter, return_elements_using_schema
 
 log = logging.getLogger(__name__)
 
@@ -34,33 +34,32 @@ mentor = ns.model('Mentor', {
 class MentorCollection(Resource):
 
     #@ns.marshal_list_with(mentor)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self):
         """
         Returns list of mentors.
         """
         mentors = Mentor.query.all()
-        mentors_schema = MentorSchema(many=True)
-        result = mentors_schema.dump(mentors)
-        return jsonify(result.data)
+        return return_elements_using_schema(mentors, MentorSchema, many=True)
+
 
     @ns.response(201, 'Mentor successfully created.')
     @ns.expect(mentor)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def post(self):
         """
         Creates a new mentor.
         """
         data = request.json
         create_mentor(data)
-        return None, 201
+        return '', 201
 
 @ns.route('/<string:username>')
 @ns.response(404, 'username not found')
 class MentorItemByUsername(Resource):
 
     #@ns.marshal_with(mentor)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self, username):
         """
         Returns a mentor by username.
@@ -73,7 +72,7 @@ class MentorItemByUsername(Resource):
 class MentorItem(Resource):
 
     #@ns.marshal_with(mentor)
-    @cross_origin(supports_credentials=True)
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self, id):
         """
         Returns a mentor by ID.
@@ -82,18 +81,20 @@ class MentorItem(Resource):
 
     @ns.expect(mentor)
     @ns.response(204, 'Mentee successfully updated.')
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def put(self, id):
         """
         Updates a mentor.
         """
         data = request.json
         update_mentor(id, data)
-        return None, 204
+        return '', 204
 
     @ns.response(204, 'User successfully deleted.')
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     def delete(self, id):
         """
         Deletes mentor.
         """
         delete_from_table(Mentor, id)
-        return None, 204
+        return '', 204

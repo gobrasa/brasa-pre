@@ -50,6 +50,7 @@ class UniversityApplication(db.Model):
     university = db.relationship(University.__name__, backref="university_applications")
 
 
+
 class Mentee(db.Model):
     __tablename__ = 'mentees'
 
@@ -83,14 +84,17 @@ class ExamSchedule(db.Model):
     score = db.Column(db.String(20))  # Not sure whether score is A or 100
 
 
-class ExamScheduleSchema(ma.ModelSchema):
-    class Meta:
-        model = ExamSchedule
-
 class UniversityApplicationSchema(ma.ModelSchema):
     class Meta:
         model = UniversityApplication
         fields = ('id','mentee_id','university_id')
+
+class ExamScheduleSchema(ma.ModelSchema):
+
+    class Meta:
+        model = ExamSchedule
+        fields = ('id', 'realization_date', 'mentee_id',
+                  'exam_id','score')
 
 
 class MenteeSchema(ma.Schema):
@@ -120,6 +124,7 @@ class Mentor(db.Model):
 
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
     cycle = db.relationship("Cycles", back_populates="mentors")
+
 
 
 class Meetings(db.Model):
@@ -205,9 +210,23 @@ class Uploads(db.Model):
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
 
+class UploadsSchema(ma.ModelSchema):
+    class Meta:
+        model = Uploads
+        fields = ('upload_id','link','username')
+
+
 
 class ExamsSchema(ma.Schema):
     class Meta:
+        model = Exams
         # Fields to expose
         fields = ('id', 'category', 'subcategory')
     # Smart hyperlinking
+
+class UniversityApplicationSchema(ma.ModelSchema):
+
+
+    class Meta:
+        model = UniversityApplication
+        fields = ('id', 'mentee_id', 'university_id')

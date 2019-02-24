@@ -1,10 +1,13 @@
 import logging.config
 import os
+import pandas as pd
 
+import flask
 import sqlalchemy
 from dotenv import load_dotenv
 from flask import Flask, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+from sqlalchemy import create_engine
 
 import settings
 from auth.auth import requires_role, AuthError, requires_auth
@@ -15,23 +18,6 @@ from restful_api.marsh import ma
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
-
-@app.after_request
-def after_request(response):
-
-    print('entered after request')
-    r = request.referrer[:-1]
-    print(request.__dict__)
-
-    response.headers.add('Access-Control-Allow-Origin', r)
-    #response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200/')
-    #response.headers.add('Access-Control-Allow-Headers', 'Content-Type,authorization')
-    response.headers.add("Access-Control-Allow-Headers",
-                       "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    response.headers.add('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS,PUT,DELETE')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
-
-    return response
 
 logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
 logging.config.fileConfig(logging_conf_path)
@@ -64,7 +50,6 @@ def create_app():
     return init_app(app)
 
 
-
 def init_app(app):
     configure_app(app)
     add_routes_manually(app)
@@ -78,30 +63,29 @@ def init_app(app):
 
 def add_routes_manually(flask_app):
 
-
-    @flask_app.route('/test')
+    @flask_app.route('/exams2')
+    @cross_origin(headers=['Content-Type', 'Authorization'])
     @requires_auth
     def index():
-        return 'Hello from index!'
-
-
-    @flask_app.route('/test-role')
-    @requires_role('admin')
-    def test_role():
-        print('entered test role')
-        return 'oi'
-
+        engine = create_engine('postgresql://localhost:5432/brasa_pre5')
+        return flask.jsonify(pd.read_sql_table('exams', engine).to_dict(orient='records'))
 
     @flask_app.after_request  # blueprint can also be app~~
     def after_request(response):
-        print('entered after request')
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        # response.headers['Access-Control-Allow-Origin'] = '*'
+        # return response
+        print('entered after request3')
+        print(request)
+        r = request.referrer[:-1] if request.referrer else 'http://localhost:4200'
+
+        response.headers.add('Access-Control-Allow-Origin', r)
+        # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,authorization')
+        response.headers.add("Access-Control-Allow-Headers",
+                             "Origin, X-Requested-With, Content-Type, Accept, authorization");
+        response.headers.add('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS,PUT,DELETE')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+
         return response
-
-
-    # @flask_app.after_request
-    # def after_request(response):
-    #     response.headers.add('Access-Control-Allow-Origin', '*')
 
 
 def register_error_handler(restful_api):
