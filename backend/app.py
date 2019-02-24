@@ -78,7 +78,7 @@ def add_routes_manually(flask_app):
         print(request)
         r = request.referrer[:-1] if request.referrer else 'http://localhost:4200'
 
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200')
+        response.headers.add('Access-Control-Allow-Origin', r)
         # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,authorization')
         response.headers.add("Access-Control-Allow-Headers",
                              "Origin, X-Requested-With, Content-Type, Accept, authorization");
