@@ -40,9 +40,9 @@ mentee = ns.model('Mentee', {
 class MenteeCollection(Resource):
 
     #@ns.marshal_list_with(mentee)
-    #@cross_origin(supports_credentials=True)
+    @cross_origin(supports_credentials=True)
     # ToDo - change back to line above if CORS does not work
-    @cross_origin(headers=['Content-Type', 'Authorization'])
+    #@cross_origin(headers=['Content-Type', 'Authorization'])
     def get(self):
         """
         Returns list of mentees.
