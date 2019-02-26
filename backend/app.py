@@ -16,7 +16,7 @@ models_for_endpoints = {Mentee, University, Mentor, User,
                         ExamSchedule, Exams, Uploads, Message,
                         Meetings}
 
-def register_blueprints(app):
+def register_blueprints(app, max_results_per_page = 2000):
 
     manager = APIManager(app, flask_sqlalchemy_db=db)
 
@@ -25,6 +25,7 @@ def register_blueprints(app):
         blueprint = manager.create_api_blueprint(
             model,
             methods=['GET','POST','PUT','DELETE'],
+            max_results_per_page=max_results_per_page
             #preprocessors= cors_preprocessor
         )
 
