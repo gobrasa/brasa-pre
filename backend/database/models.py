@@ -1,13 +1,6 @@
-# The examples in this file come from the Flask-SQLAlchemy documentation
-# For more information take a look at:
-# http://flask-sqlalchemy.pocoo.org/2.1/quickstart/#simple-relationships
-
 import datetime
 
-from werkzeug.security import generate_password_hash, check_password_hash
-
 from database import db
-from restful_api.marsh import ma
 
 
 class University(db.Model):
@@ -18,15 +11,6 @@ class University(db.Model):
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     country_iso_code = db.Column(db.String(3))
-
-
-class UniversitySchema(ma.ModelSchema):
-    class Meta:
-        model = University
-
-        fields = ('id', 'name', 'city',
-                  'state', 'country_iso_code'
-                  )
 
 
 class Exams(db.Model):
@@ -48,7 +32,6 @@ class UniversityApplication(db.Model):
 
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_applications")
-
 
 
 class Mentee(db.Model):
@@ -84,34 +67,6 @@ class ExamSchedule(db.Model):
     score = db.Column(db.String(20))  # Not sure whether score is A or 100
 
 
-class UniversityApplicationSchema(ma.ModelSchema):
-    class Meta:
-        model = UniversityApplication
-        fields = ('id','mentee_id','university_id')
-
-class ExamScheduleSchema(ma.ModelSchema):
-
-    class Meta:
-        model = ExamSchedule
-        fields = ('id', 'realization_date', 'mentee_id',
-                  'exam_id','score')
-
-
-class MenteeSchema(ma.Schema):
-    university_applications = ma.Nested(UniversityApplicationSchema, many=True)
-    exam_schedules = ma.Nested(ExamScheduleSchema, many=True)
-
-    class Meta:
-        # Fields to expose
-        model = Mentee
-        fields = ('id', 'mentor_id', 'username',
-                  'first_name', 'last_name', 'city',
-                  'state', 'financial_aid',
-                  'cycle_id',
-                  'exam_schedules',
-                  'university_applications'
-                  )
-
 class Mentor(db.Model):
     __tablename__ = 'mentors'
 
@@ -126,7 +81,6 @@ class Mentor(db.Model):
     cycle = db.relationship("Cycles", back_populates="mentors")
 
 
-
 class Meetings(db.Model):
     __tablename__ = 'meetings'
 
@@ -139,6 +93,7 @@ class Meetings(db.Model):
     mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
     mentee = db.relationship(Mentee.__name__, backref="meetings")
 
+
 class Cycles(db.Model):
     __tablename__ = "cycles"
 
@@ -150,22 +105,6 @@ class Cycles(db.Model):
 
     mentees = db.relationship(Mentee.__name__)
     mentors = db.relationship(Mentor.__name__, back_populates='cycle')
-
-class CyclesSchema(ma.ModelSchema):
-    class Meta:
-        # Fields to expose
-        model = Cycles
-
-class MentorSchema(ma.Schema):
-    cycle = ma.Nested(CyclesSchema, many=False)
-    mentees = ma.Nested(MenteeSchema, many=True)
-
-    class Meta:
-        # Fields to expose
-        model = Mentor
-        fields = ('id', 'username', 'first_name',
-                  'last_name','cycle','mentees'
-                  )
 
 
 class Role(db.Model):
@@ -184,11 +123,6 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     role_name = db.Column(db.String(30), db.ForeignKey('role.role_name'))
     uploads = db.relationship("Uploads")
-
-class UserSchema(ma.Schema):
-    class Meta:
-        # Fields to expose
-        fields = ('id', 'username', 'email', 'role_name')
 
 class Message(db.Model):
     __tablename__ = "messages"
@@ -209,24 +143,3 @@ class Uploads(db.Model):
     upload_id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
-
-class UploadsSchema(ma.ModelSchema):
-    class Meta:
-        model = Uploads
-        fields = ('upload_id','link','username')
-
-
-
-class ExamsSchema(ma.Schema):
-    class Meta:
-        model = Exams
-        # Fields to expose
-        fields = ('id', 'category', 'subcategory')
-    # Smart hyperlinking
-
-class UniversityApplicationSchema(ma.ModelSchema):
-
-
-    class Meta:
-        model = UniversityApplication
-        fields = ('id', 'mentee_id', 'university_id')
