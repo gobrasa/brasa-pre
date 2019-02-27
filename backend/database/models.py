@@ -80,6 +80,9 @@ class Mentor(db.Model):
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
     cycle = db.relationship("Cycles", back_populates="mentors")
 
+    university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=True)
+    university = db.relationship(University.__name__, backref="mentors")
+
 
 class Meetings(db.Model):
     __tablename__ = 'meetings'
