@@ -25,7 +25,7 @@ def register_blueprints(app, max_results_per_page = 2000):
         blueprint = manager.create_api_blueprint(
             model,
             methods=['GET','POST','PUT','DELETE'],
-            max_results_per_page=max_results_per_page
+            results_per_page=0
             #preprocessors= cors_preprocessor
         )
 
