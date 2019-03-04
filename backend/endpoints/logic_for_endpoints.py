@@ -1,6 +1,7 @@
 from typing import NamedTuple, List, Callable
 
 import flask
+from flask import request
 
 from database.models import Mentee, UniversityApplication
 from database import db
@@ -20,8 +21,15 @@ def return_routes_for_logic_endpoints():
                            function=define_university_application_for_mentee),
     ]
 
-def define_university_application_for_mentee(mentee_id, university_ids):
+def define_university_application_for_mentee():
     # get mentee
+
+    request_json = request.get_json()
+    mentee_id = request_json['mentee_id']
+    university_ids = request_json['university_ids']
+
+    print('mentee_id {}, university_ids {}'.format(mentee_id, university_ids))
+
     mentee = Mentee.query.filter(Mentee.id == mentee_id).one()
 
     # delete all mappings, push
@@ -41,6 +49,8 @@ def define_university_application_for_mentee(mentee_id, university_ids):
     # post
     Mentee.query.session.add(mentee)
     Mentee.query.session.commit()
+
+    return 'University applications from mentee {} successfully updated'.format(mentee_id), 200
 
 class EndpointLogicConfigurator:
 
