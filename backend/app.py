@@ -17,8 +17,7 @@ logic_config = EndpointLogicConfigurator()
 models_for_endpoints = {Mentee, University, Mentor, User,
                         ExamSchedule, Uploads, Message,
                         Meetings, UniversityApplication,
-                        #Exam
-                        }
+                        Exams}
 
 def register_blueprints(app):
 
@@ -29,21 +28,12 @@ def register_blueprints(app):
         blueprint = manager.create_api_blueprint(
             model,
             methods=['GET','POST','PUT','DELETE'],
-            results_per_page=0
-            #preprocessors= cors_preprocessor
+            results_per_page=0,
+            preprocessors = dict(GET_SINGLE=[auth_func], GET_MANY=[auth_func], POST=[auth_func],
+                             PUT=[auth_func], DELETE=[auth_func])
         )
 
         app.register_blueprint(blueprint)
-
-    # ToDo - add JWT verification to all endpoints once front end is working
-    # registering manually to test JWT
-    exam_blueprint = manager.create_api_blueprint(Exams,
-                          methods=['GET', 'POST', 'PUT', 'DELETE'],
-                          results_per_page=0,
-                          preprocessors=dict(GET_SINGLE=[auth_func],GET_MANY=[auth_func], POST=[auth_func],
-                                             PUT= [auth_func], DELETE=[auth_func])
-                          )
-    app.register_blueprint(exam_blueprint)
 
 @requires_auth
 def auth_func(**kw):

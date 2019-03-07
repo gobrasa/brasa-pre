@@ -33,17 +33,19 @@ class UniversityApplication(db.Model):
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_applications")
 
+class Person:
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
+    city = db.Column(db.String(50))
+    state = db.Column(db.String(50))
 
-class Mentee(db.Model):
+
+class Mentee(db.Model, Person):
     __tablename__ = 'mentees'
 
     id = db.Column(db.Integer, primary_key=True)
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
     username = db.Column(db.String(64), db.ForeignKey('users.username'), unique=True, index=True)
-    first_name = db.Column(db.String(50))
-    last_name = db.Column(db.String(50))
-    city = db.Column(db.String(50))
-    state = db.Column(db.String(50))
     financial_aid = db.Column(db.Boolean, nullable=False)
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
 
@@ -67,13 +69,12 @@ class ExamSchedule(db.Model):
     score = db.Column(db.String(20))  # Not sure whether score is A or 100
 
 
-class Mentor(db.Model):
+class Mentor(db.Model, Person):
     __tablename__ = 'mentors'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'), unique=True, index=True)
-    first_name = db.Column(db.String(50))
-    last_name = db.Column(db.String(50))
+
 
     mentees = db.relationship(Mentee.__name__)
 
