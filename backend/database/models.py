@@ -84,6 +84,18 @@ class Mentor(db.Model, Person):
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=True)
     university = db.relationship(University.__name__, backref="mentors")
 
+    # ToDO - add course relationship (as major and minor) - differentiate between mentors_majors and mentors_minors
+    major_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    major = db.relationship("Courses",
+                            foreign_keys = [major_course_id]
+                            )
+
+    minor_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    minor = db.relationship("Courses",
+                            foreign_keys=[minor_course_id]
+                            #primaryjoin= 'mentors.minor_course_id == courses.id'
+                            )
+
 
 class Meetings(db.Model):
     __tablename__ = 'meetings'
@@ -128,18 +140,6 @@ class User(db.Model):
     role_name = db.Column(db.String(30), db.ForeignKey('role.role_name'))
     uploads = db.relationship("Uploads")
 
-class Message(db.Model):
-    __tablename__ = "messages"
-
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.datetime.utcnow)
-
-    def __repr__(self):
-        return '<Message {}>'.format(self.body)
-
 
 class Uploads(db.Model):
     __tablename__ = "uploads"
@@ -147,3 +147,15 @@ class Uploads(db.Model):
     upload_id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
+
+class Courses(db.Model):
+    __tablename__ = "courses"
+
+    # ToDo - add relationship to mentors (one-to-one, as major and minor) -  differentiate between mentors_majors and mentors_minors
+    # https://github.com/fivethirtyeight/data/blob/master/college-majors/majors-list.csv
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), index=True, unique=True)
+    category = db.Column(db.String(200))
+    #mentors_major = db.relationship(Mentor.__name__, back_populates='major', foreign_keys=[Mentor.major_course_id])
+    #mentors_minor = db.relationship(Mentor.__name__, back_populates='minor', foreign_keys=[Mentor.minor_course_id])
