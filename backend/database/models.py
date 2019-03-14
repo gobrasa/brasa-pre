@@ -144,6 +144,7 @@ class User(db.Model):
 class Uploads(db.Model):
     __tablename__ = "uploads"
 
+    title = db.Column(db.String(120))
     upload_id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
