@@ -36,7 +36,7 @@ def register_blueprints(app):
         app.register_blueprint(blueprint)
 
 @requires_auth
-def auth_func(**kw):
+def auth_func(*args, **kw):
     print('entered auth_func')
     pass
 
