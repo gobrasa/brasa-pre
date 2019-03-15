@@ -9,14 +9,14 @@ from flask_restless import APIManager
 import settings
 from auth.auth import AuthError, requires_auth
 from database import db
-from database.models import Mentee, University, Mentor, User, Exams, ExamSchedule, Uploads, Meetings, \
+from database.models import Mentee, University, Mentor, User, Exams, ExamSchedule, Uploads, \
     UniversityApplication, Courses
 from endpoints.logic_for_endpoints import EndpointLogicConfigurator
 
 logic_config = EndpointLogicConfigurator()
 models_for_endpoints = {Mentee, University, Mentor, User,
                         ExamSchedule, Uploads,
-                        Meetings, UniversityApplication, Courses,
+                        UniversityApplication, Courses,
                         Exams}
 
 def register_blueprints(app):

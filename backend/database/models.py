@@ -97,19 +97,6 @@ class Mentor(db.Model, Person):
                             )
 
 
-class Meetings(db.Model):
-    __tablename__ = 'meetings'
-
-    id = db.Column(db.Integer, primary_key=True)
-    datetime = db.Column(db.DateTime, nullable=False)
-
-    mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'), nullable=False)
-    mentor = db.relationship(Mentor.__name__, backref="meetings")
-
-    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
-    mentee = db.relationship(Mentee.__name__, backref="meetings")
-
-
 class Cycles(db.Model):
     __tablename__ = "cycles"
 
