@@ -49,9 +49,14 @@ class Mentee(db.Model, Person):
     financial_aid = db.Column(db.Boolean, nullable=False)
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
 
+    primary_contact_username = db.Column(db.String(64), db.ForeignKey('users.username'))
+    primary_contact = db.relationship("User",
+                                   foreign_keys=[primary_contact_username]
+                                   )
+
+
     # Exam schedule
     exam_schedules = db.relationship("ExamSchedule")
-
     university_applications = db.relationship("UniversityApplication",
                                               back_populates="mentee", uselist=True)
 
@@ -90,12 +95,20 @@ class Mentor(db.Model, Person):
                             foreign_keys = [major_course_id]
                             )
 
+    second_major_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    second_major = db.relationship("Courses",
+                            foreign_keys=[second_major_course_id]
+                            )
+
     minor_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     minor = db.relationship("Courses",
                             foreign_keys=[minor_course_id]
-                            #primaryjoin= 'mentors.minor_course_id == courses.id'
                             )
 
+    second_minor_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    second_minor = db.relationship("Courses",
+                            foreign_keys=[second_minor_course_id]
+                            )
 
 class Cycles(db.Model):
     __tablename__ = "cycles"
