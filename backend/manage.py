@@ -9,8 +9,6 @@ from database import db
 
 load_dotenv()
 
-#app.config.from_object(os.getenv('APP_SETTINGS'))
-#initialize_app(app)
 print (os.getenv('DATABASE_URL'))
 
 migrate = Migrate(app, db)

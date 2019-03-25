@@ -22,7 +22,6 @@ def return_routes_for_logic_endpoints():
     ]
 
 def define_university_application_for_mentee():
-    # get mentee
 
     request_json = request.get_json()
     mentee_id = request_json['mentee_id']
@@ -53,6 +52,7 @@ def define_university_application_for_mentee():
     return 'University applications from mentee {} successfully updated'.format(mentee_id), 200
 
 class EndpointLogicConfigurator:
+    """ Class for storing all custom endpoints that contain business logic. """
 
     def __init__(self, routes_endpoint_def = return_routes_for_logic_endpoints()):
         self.routes_endpoints_def = routes_endpoint_def
