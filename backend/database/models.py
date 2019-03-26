@@ -110,6 +110,8 @@ class Mentor(db.Model, Person):
                             foreign_keys=[second_minor_course_id]
                             )
 
+    user = db.relationship("User")
+
 class Cycles(db.Model):
     __tablename__ = "cycles"
 
