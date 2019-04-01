@@ -4,10 +4,6 @@
 
 ### Starting app locally
 
-Set environment variable APP_SETTINGS in a .env file in the src directory:
-```dotenv
-APP_SETTINGS="config.DevelopmentConfig"
-```
 
 To run from command-line:
 ```python
@@ -32,8 +28,16 @@ pytest tests/test_database.py
 
 ### Adding a new model in database
 
-1 - Add class to models.py file (add tablename, columns, relationships)
-2 - Create migration by initialising the migrations directory once:
+* Add class to models.py file (add tablename, columns, relationships)
+
+* Create .env file
+
+```
+cd backend 
+echo DATABASE_URL='"postgresql://localhost/brasa_pre5"' > .env
+```
+
+* Create migration by initialising the migrations directory once:
 
 ```bash
 cd backend
@@ -50,6 +54,7 @@ python src/manage.py db upgrade
 
 This will create tables and/or upgrade columns in the Postgres DB.
 
+
 ### Deploying to Heroku
 
 git push heroku master
@@ -57,10 +62,3 @@ git push heroku master
 ### Deployment to CircleCI
 
 TBD
-
-### Definition of done
-
-- Code was written
-- Tests were written
-- CircleCI runs locally successfully
-- Tests passed after submitting pull request
