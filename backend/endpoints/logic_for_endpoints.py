@@ -3,8 +3,8 @@ from typing import NamedTuple, List, Callable
 import flask
 from flask import request
 
-from database.models import Mentee, UniversityApplication
-from database import db
+from backend.database.models import Mentee, UniversityApplication
+from backend.database import db
 
 RoutesEndpointsDef = NamedTuple('routes_endpoints_def',
                                 [('url', str), ('methods', List), ('function', Callable)])
