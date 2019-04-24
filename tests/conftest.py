@@ -1,8 +1,6 @@
 import pytest
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 
-from app import create_app
+from backend.app import create_app
 
 
 @pytest.fixture
@@ -23,7 +21,7 @@ def create_entities(db):
 def configure_test_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
     # ToDo - apply migrations on the fly to test.db from alembic versions
-    from database import db
+    from backend.database import db
     with app.app_context():
         db.create_all()
         create_entities(db)
