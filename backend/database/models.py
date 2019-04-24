@@ -1,6 +1,6 @@
 import datetime
 
-from backend.database import db
+from database import db
 
 
 class University(db.Model):

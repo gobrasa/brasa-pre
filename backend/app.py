@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS, cross_origin
 from flask_restless import APIManager
-from backend.auth.auth import AuthError, requires_auth
-from backend.database import db
-from backend.database.models import Mentee, University, Mentor, User, Exams, ExamSchedule, Uploads, \
-    UniversityApplication, Courses
-from backend.endpoints.logic_for_endpoints import EndpointLogicConfigurator
+from auth.auth import AuthError, requires_auth
+from database import db
+from database.models import Mentee, University, Mentor, User, Exams, ExamSchedule, Uploads, \
+    UniversityApplication, Courses, UniversityAccepted
+from endpoints.logic_for_endpoints import EndpointLogicConfigurator
 
 logic_config = EndpointLogicConfigurator()
 
@@ -17,7 +17,7 @@ logic_config = EndpointLogicConfigurator()
 models_for_endpoints = {Mentee, University, Mentor, User,
                         ExamSchedule, Uploads,
                         UniversityApplication, Courses,
-                        Exams}
+                        Exams, UniversityAccepted}
 
 
 def register_blueprints(app):
