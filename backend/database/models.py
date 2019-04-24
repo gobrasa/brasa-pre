@@ -33,6 +33,17 @@ class UniversityApplication(db.Model):
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_applications")
 
+class UniversityAccepted(db.Model):
+    __tablename__ = "university_acceptances"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    mentee_id = db.Column(db.Integer, db.ForeignKey('mentees.id'), nullable=False)
+    mentee = db.relationship("Mentee", back_populates="university_acceptances")
+
+    university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
+    university = db.relationship(University.__name__, backref="university_acceptances")
+
 class Person:
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
@@ -58,6 +69,8 @@ class Mentee(db.Model, Person):
     # Exam schedule
     exam_schedules = db.relationship("ExamSchedule")
     university_applications = db.relationship("UniversityApplication",
+                                              back_populates="mentee", uselist=True)
+    university_acceptances = db.relationship("UniversityAccepted",
                                               back_populates="mentee", uselist=True)
 
 

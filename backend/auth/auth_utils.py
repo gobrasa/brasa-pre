@@ -14,7 +14,7 @@ def get_auth0_token(domain, client_id, client_secret, audience):
     return token['access_token']
 
 
-def id_generator(size=6, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
+def id_generator(size=16, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     """ Generates random ID for being used as temporary password """
     return ''.join(random.choice(chars) for _ in range(size))
 
