@@ -61,7 +61,7 @@ class Mentee(db.Model, Person):
     username = db.Column(db.String(64), db.ForeignKey('users.username'), unique=True, index=True)
     financial_aid = db.Column(db.Boolean, nullable=False)
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
-    phone_number = db.Column(db.String, unique=True)
+    phone_number = db.Column(db.String(15), unique=True)
 
     primary_contact_username = db.Column(db.String(64), db.ForeignKey('users.username'))
     primary_contact = db.relationship("User",
@@ -99,7 +99,7 @@ class Mentor(db.Model, Person):
 
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
     cycle = db.relationship("Cycles", back_populates="mentors")
-    phone_number = db.Column(db.String, unique=True)
+    phone_number = db.Column(db.String(15), unique=True)
 
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=True)
     university = db.relationship(University.__name__, backref="mentors")
