@@ -20,7 +20,7 @@ def create_entities(db):
 
 def configure_test_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
-    # ToDo - apply migrations on the fly to test.db from alembic versions
+    # TODO: Apply migrations on the fly to test.db from alembic versions
     from backend.database import db
     with app.app_context():
         db.create_all()

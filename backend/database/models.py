@@ -33,6 +33,7 @@ class UniversityApplication(db.Model):
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_applications")
 
+
 class UniversityAccepted(db.Model):
     __tablename__ = "university_acceptances"
 
@@ -43,6 +44,7 @@ class UniversityAccepted(db.Model):
 
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=False)
     university = db.relationship(University.__name__, backref="university_acceptances")
+
 
 class Person:
     first_name = db.Column(db.String(50))
@@ -62,16 +64,15 @@ class Mentee(db.Model, Person):
 
     primary_contact_username = db.Column(db.String(64), db.ForeignKey('users.username'))
     primary_contact = db.relationship("User",
-                                   foreign_keys=[primary_contact_username]
-                                   )
-
+                                      foreign_keys=[primary_contact_username]
+                                      )
 
     # Exam schedule
     exam_schedules = db.relationship("ExamSchedule")
     university_applications = db.relationship("UniversityApplication",
                                               back_populates="mentee", uselist=True)
     university_acceptances = db.relationship("UniversityAccepted",
-                                              back_populates="mentee", uselist=True)
+                                             back_populates="mentee", uselist=True)
 
 
 class ExamSchedule(db.Model):
@@ -93,7 +94,6 @@ class Mentor(db.Model, Person):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'), unique=True, index=True)
 
-
     mentees = db.relationship(Mentee.__name__)
 
     cycle_id = db.Column(db.Integer, db.ForeignKey('cycles.id'))
@@ -102,16 +102,16 @@ class Mentor(db.Model, Person):
     university_id = db.Column(db.Integer, db.ForeignKey('universities.id'), nullable=True)
     university = db.relationship(University.__name__, backref="mentors")
 
-    # ToDO - add course relationship (as major and minor) - differentiate between mentors_majors and mentors_minors
+    # TODO: Add course relationship (as major and minor) - differentiate between mentors_majors and mentors_minors
     major_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     major = db.relationship("Courses",
-                            foreign_keys = [major_course_id]
+                            foreign_keys=[major_course_id]
                             )
 
     second_major_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     second_major = db.relationship("Courses",
-                            foreign_keys=[second_major_course_id]
-                            )
+                                   foreign_keys=[second_major_course_id]
+                                   )
 
     minor_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     minor = db.relationship("Courses",
@@ -120,10 +120,11 @@ class Mentor(db.Model, Person):
 
     second_minor_course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     second_minor = db.relationship("Courses",
-                            foreign_keys=[second_minor_course_id]
-                            )
+                                   foreign_keys=[second_minor_course_id]
+                                   )
 
     user = db.relationship("User")
+
 
 class Cycles(db.Model):
     __tablename__ = "cycles"
@@ -164,14 +165,15 @@ class Uploads(db.Model):
     link = db.Column(db.String(120), index=True, unique=True)
     username = db.Column(db.String(64), db.ForeignKey('users.username'))
 
+
 class Courses(db.Model):
     __tablename__ = "courses"
 
-    # ToDo - add relationship to mentors (one-to-one, as major and minor) -  differentiate between mentors_majors and mentors_minors
+    # TODO: Add relationship to mentors (one-to-one, as major and minor) -  differentiate between mentors_majors and mentors_minors
     # https://github.com/fivethirtyeight/data/blob/master/college-majors/majors-list.csv
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), index=True, unique=True)
     category = db.Column(db.String(200))
-    #mentors_major = db.relationship(Mentor.__name__, back_populates='major', foreign_keys=[Mentor.major_course_id])
-    #mentors_minor = db.relationship(Mentor.__name__, back_populates='minor', foreign_keys=[Mentor.minor_course_id])
+    # mentors_major = db.relationship(Mentor.__name__, back_populates='major', foreign_keys=[Mentor.major_course_id])
+    # mentors_minor = db.relationship(Mentor.__name__, back_populates='minor', foreign_keys=[Mentor.minor_course_id])
