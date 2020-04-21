@@ -9,6 +9,7 @@ from database import db
 RoutesEndpointsDef = NamedTuple('routes_endpoints_def',
                                 [('url', str), ('methods', List), ('function', Callable)])
 
+
 def return_routes_for_logic_endpoints():
     """
     Defines routes structure for logic endpoints, which will then be registered in the main
@@ -21,8 +22,8 @@ def return_routes_for_logic_endpoints():
                            function=define_university_application_for_mentee),
     ]
 
-def define_university_application_for_mentee():
 
+def define_university_application_for_mentee():
     request_json = request.get_json()
     mentee_id = request_json['mentee_id']
     university_ids = request_json['university_ids']
@@ -51,15 +52,15 @@ def define_university_application_for_mentee():
 
     return 'University applications from mentee {} successfully updated'.format(mentee_id), 200
 
+
 class EndpointLogicConfigurator:
     """ Class for storing all custom endpoints that contain business logic. """
 
-    def __init__(self, routes_endpoint_def = return_routes_for_logic_endpoints()):
+    def __init__(self, routes_endpoint_def=return_routes_for_logic_endpoints()):
         self.routes_endpoints_def = routes_endpoint_def
 
     def configure_logic_endpoints(self, app: flask.app):
-
-        for url,methods,function in self.routes_endpoints_def:
+        for url, methods, function in self.routes_endpoints_def:
             app.add_url_rule(url, view_func=function, methods=methods)
 
         return app

@@ -1,15 +1,14 @@
-import os
-
 import flask
-from dotenv import load_dotenv
-from flask import Flask
-from flask_cors import CORS, cross_origin
-from flask_restless import APIManager
+import os
 from auth.auth import AuthError, requires_auth
 from database import db
 from database.models import Mentee, University, Mentor, User, Exams, ExamSchedule, Uploads, \
     UniversityApplication, Courses, UniversityAccepted
+from dotenv import load_dotenv
 from endpoints.logic_for_endpoints import EndpointLogicConfigurator
+from flask import Flask
+from flask_cors import CORS, cross_origin
+from flask_restless import APIManager
 
 logic_config = EndpointLogicConfigurator()
 

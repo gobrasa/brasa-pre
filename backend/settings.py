@@ -1,6 +1,6 @@
-# ToDo - move everything to .env file
+# TODO: Move everything to .env file
 # Flask settings
-#FLASK_SERVER_NAME = 'localhost:8888'
+# FLASK_SERVER_NAME = 'localhost:8888'
 import os
 
 FLASK_DEBUG = True  # Do not use debug mode in production
@@ -14,7 +14,6 @@ RESTPLUS_ERROR_404_HELP = False
 # SQLAlchemy settings
 SQLALCHEMY_DATABASE_URI = "postgresql://localhost/brasa_pre5"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-
 
 DEBUG = False
 TESTING = False

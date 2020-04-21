@@ -9,7 +9,7 @@ import pandas as pd
 load_dotenv('auth0.env')
 
 domain = os.getenv("DOMAIN")
-non_interactive_client_id  = os.getenv('CLIENT_ID_INTERACT_AUTH0')
+non_interactive_client_id = os.getenv('CLIENT_ID_INTERACT_AUTH0')
 non_interactive_client_secret = os.getenv('CLIENT_SECRET_INTERACT_AUTH0')
 audience = 'https://{}/api/v2/'.format(domain)
 
@@ -19,10 +19,10 @@ mgmt_api_token = get_auth0_token(domain,
                                  audience)
 
 auth0 = Auth0(domain, mgmt_api_token)
-#print (auth0.users.list(search_engine='v3'))
+# print (auth0.users.list(search_engine='v3'))
 
-#user_created = create_new_user_in_auth0(auth0, "test123444@test123.com")
-# ToDo - use username (user_created['username]) and store it in DB
+# user_created = create_new_user_in_auth0(auth0, "test123444@test123.com")
+# TODO: Use username (user_created['username]) and store it in DB
 usuarios1 = pd.read_excel(r'usuarios1.xlsx')
 print(usuarios1.shape)
 print(usuarios1)
@@ -40,6 +40,6 @@ for index, row in usuarios1.iterrows():
     senhas.append([email, password])
     print(password)
 
-test = pd.DataFrame(senhas, columns = ['email', 'senha'])
+test = pd.DataFrame(senhas, columns=['email', 'senha'])
 print(test)
 test.to_csv('senhas.csv')

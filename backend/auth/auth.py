@@ -4,7 +4,6 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-
 AUTH0_DOMAIN = "brasa-pre-app.eu.auth0.com"
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'https://online-exam.digituz.com'
@@ -21,7 +20,6 @@ def get_token_auth_header():
     """
     auth = request.headers.get('Authorization', None)
     if not auth:
-
         raise AuthError({
             'code': 'authorization_header_missing',
             'description': 'Authorization header is expected.'
@@ -107,6 +105,7 @@ def requires_auth(f):
         }, 400)
 
     return decorated
+
 
 def requires_role(required_role):
     def decorator(f):

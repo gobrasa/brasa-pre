@@ -32,8 +32,8 @@ def create_new_user_in_db(username, email, role_name, users_endpoint, token, ver
     if verbose:
         print(r, r.json())
 
-def create_new_user_in_auth0(auth0, email, password=id_generator(16)):
 
+def create_new_user_in_auth0(auth0, email, password=id_generator(16)):
     body = {"email": email,
             "password": password,
             "connection": "Username-Password-Authentication"}
