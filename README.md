@@ -6,13 +6,15 @@
 
 
 To run from command-line:
-```python
+````shell
 cd backend
+````
+```shell
 python app.py
 ```
 
-Or to run locally with Heroku:
-```heroku
+Or to run locally with Heroku (not recommended):
+```shell
 heroku local web
 ```
 
