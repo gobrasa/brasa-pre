@@ -3,18 +3,18 @@
 1. Update models
 2. Create migration
 
-```python
+```shell
 python backend/manage.py db migrate -m "my-cool-migration"
 ```
 
 3. Upgrade head
 
-```python
+```shell
 python backend/manage.py db upgrade head
 ```
 
 * If needed, downgrade
-```python
+```shell
 python backend/manage.py db downgrade
 ```
 
