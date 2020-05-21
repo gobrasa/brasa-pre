@@ -52,6 +52,10 @@ class Person:
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
 
+class Partnership:
+    title = db.Column(db.String(50))
+    link = db.Column(db.String(50))
+    picture = db.Column(db.String(50))
 
 class Mentee(db.Model, Person):
     __tablename__ = 'mentees'
