@@ -55,7 +55,7 @@ class Person:
 class Partnership:
     title = db.Column(db.String(50))
     link = db.Column(db.String(50))
-    picture = db.Column(db.String(50))
+    picture = db.Column(db.String(50))  # TODO: Add boto3 to store theses informations on aws
 
 class Mentee(db.Model, Person):
     __tablename__ = 'mentees'
