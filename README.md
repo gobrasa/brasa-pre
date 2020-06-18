@@ -7,7 +7,7 @@
 
 To run from command-line:
 ```python
-cd src
+cd backend
 python app.py
 ```
 
@@ -41,7 +41,7 @@ echo DATABASE_URL='"postgresql://localhost/brasa_pre5"' > .env
 
 ```bash
 cd backend
-python src/manage.py db migrate -m "created initial tables"
+python backend/manage.py db migrate -m "created initial tables"
 ```
 
 If any db operations need to be added, add manually to the .py file created inside the migrations folder.
@@ -49,7 +49,7 @@ If any db operations need to be added, add manually to the .py file created insi
 The database in Heroku will execute the upgrade script when deploying upon release of a new version. If running locally, run:
 
 ```bash
-python src/manage.py db upgrade
+python backend/manage.py db upgrade
 ```
 
 This will create tables and/or upgrade columns in the Postgres DB.
