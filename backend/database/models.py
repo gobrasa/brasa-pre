@@ -52,10 +52,14 @@ class Person:
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
 
-class Partnership:
+
+class Partnership(db.Model):
+    __tablename__ = 'partnerships'
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     link = db.Column(db.String(50))
     picture = db.Column(db.String(50))  # TODO: Add boto3 to store theses informations on aws
+
 
 class Mentee(db.Model, Person):
     __tablename__ = 'mentees'
